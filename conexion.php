@@ -12,22 +12,22 @@
  */
 class conexion {
     //put your code here
-    public $con;
+    var $con;
     
-    function __construct(){        
+    function conexion(){        
 }
     
-    public function conectar($bd){
+     function conectar($bd){
         $this->con=mysql_connect('localhost', 'root', '');
         mysql_select_db($bd,$this->con);
     }
     
-    public function consulta($sql){
+     function consulta($sql){
         $res=mysql_query($sql);	
         return $res;
     }
     
-    public function close(){
+     function close(){
         mysql_close();
     }
     

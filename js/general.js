@@ -34,7 +34,7 @@ $(document).ready(function(){
                 type: "POST",
                 data: $(this).serialize(),
                 beforeSend:function(){
-                    $("#msjUni").text("procesando").css("color","#fc6d71").show().fadeOut( 3000 );
+                    $("#msjUni").text("procesando").css("color","#80E0B0").show().fadeOut( 3000 );
                 },
                 success:function(datos){
                     
@@ -46,7 +46,7 @@ $(document).ready(function(){
                     else{
                         $("#msjUni").text("Datos incorrectos").css("color","#fc6d71").show().fadeOut( 5000 );
                     }
-                    alert(datos);
+                    
                 },
                 error:function(){
                     $("#msjUni").text("Error al grabar").css("color","#fc6d71").show().fadeOut( 15000 );

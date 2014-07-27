@@ -1,6 +1,6 @@
 
 <?php
-include_once 'cabecera.php';
+include_once('cabecera.php');
 ?>
 <section class="cuerpo">
     <section class="registro">

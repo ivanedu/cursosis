@@ -1,6 +1,6 @@
 
 <?php
-include_once 'cabecera.php';
+include_once('cabecera.php');
 ?>
 <h2>Registrar pago con Boleta a la comisión de contabilidad</h2>
 <section class="cuerpo">

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once 'conexion.php';
+include_once ('conexion.php');
 $cn= new conexion();
 if(isset($_SESSION["validado"])){
 	if($_SESSION["validado"]=="si"){
