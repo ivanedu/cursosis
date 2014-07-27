@@ -10,15 +10,15 @@ include_once('cabecera.php');
             <b>Registrar Voucher</b>
             <table >
                 <tr>
-                    <td><label for="idDocvou" class="etiqueta">ID Documento de Pago (DNI):</label></td>
+                    <td><label for="idDocvou" class="etiqueta">*ID Documento de Pago (DNI):</label></td>
                     <td><input id="idDocvou" name="idDocvou" type="text" required="required"></td>
                 </tr>
                 <tr>
-                    <td><label for="nroOpvou" class="etiqueta">nroOp:</label></td>
+                    <td><label for="nroOpvou" class="etiqueta">*nroOp:</label></td>
                     <td><input id="nroOpvou" name="nroOpvou" type="number" required="required"></td>
                 </tr>
                 <tr>
-                    <td><label for="fechVou" class="etiqueta">fecha voucher: </label></td>
+                    <td><label for="fechVou" class="etiqueta">*fecha voucher: </label></td>
                     <td><input id="fechVou" name="fechVou" type="date" required="required"></td>
                 </tr>
                 <tr>
@@ -26,11 +26,11 @@ include_once('cabecera.php');
                     <td>Ventanilla<input type="radio" name="boolAgenvou" value="0"></td>
                 </tr>
                 <tr>
-                    <td><label for="nomAgenvou" class="etiqueta">nombre - tra: </label></td>
+                    <td><label for="nomAgenvou" class="etiqueta">*nombre - tra: </label></td>
                     <td><input id="nomAgenvou" name="nomAgenvou" type="text" required="required"></td>
                 </tr>
                 <tr>
-                    <td><label for="montoVou" class="etiqueta">monto: </label></td>
+                    <td><label for="montoVou" class="etiqueta">*monto: </label></td>
                     <td><input id="montoVou" name="montoVou" type="number" required="required"></td>
                 </tr>
                 <tr>
@@ -38,7 +38,7 @@ include_once('cabecera.php');
                     <td>Múltiple<input type="radio" name="boolmultiplevou" value="1"></td>
                 </tr>
                 <tr>
-                    <td><label for="imgVou" class="etiqueta">imagen: </label></td>
+                    <td><label for="imgVou" class="etiqueta">*imagen: </label></td>
                     <td><input id="imgVou" name="imgVou" type="text"></td>
                 </tr>                        
                 <tr>
@@ -129,28 +129,24 @@ include_once('cabecera.php');
             <b>Registrar Persona</b>
             <table >
                 <tr>
-                    <td><label for="DNIvou" class="etiqueta">DNI:</label></td>
+                    <td><label for="DNIvou" class="etiqueta">*DNI:</label></td>
                     <td><input id="DNIvou" name="DNIvou" type="number" required="required"></td>
                 </tr>
                 <tr>
-                    <td><label for="nomPervou" class="etiqueta">Nombre completo:</label></td>
-                    <td><input id="nomPervou" name="nomPervou" type="text" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="apePatvou" class="etiqueta">Apellido Paterno: </label></td>
+                    <td><label for="apePatvou" class="etiqueta">*Apellido Paterno: </label></td>
                     <td><input id="apePatvou" name="apePatvou" type="text" required="required"></td>
                 </tr>
                 <tr>
-                    <td><label for="apeMatvou" class="etiqueta">Apellido Materno: </label></td>
+                    <td><label for="apeMatvou" class="etiqueta">*Apellido Materno: </label></td>
                     <td><input id="apeMatvou" name="apeMatvou" type="text" required="required"></td>
+                </tr>
+                <tr>
+                    <td><label for="nomPervou" class="etiqueta">*Nombre completo:</label></td>
+                    <td><input id="nomPervou" name="nomPervou" type="text" required="required"></td>
                 </tr>
                 <tr>
                     <td><label for="emailPervou" class="etiqueta">email: </label></td>
                     <td><input id="emailPervou" name="emailPervou" type="email"></td>
-                </tr>
-                <tr>
-                    <td><label for="telPervou" class="etiqueta">teléfono: </label></td>
-                    <td><input id="telPervou" name="telPervou" type="text"></td>
                 </tr>
                 <tr>
                     <td><label for="depPervou" class="etiqueta">Departamento uni: </label></td>
@@ -173,10 +169,6 @@ include_once('cabecera.php');
                 <tr>
                     <td><label for="codUnivou" class="etiqueta">codigoUni: </label></td>
                     <td><input id="codUnivou" name="codUnivou" type="text"></td>
-                </tr>
-                <tr>
-                    <td><label for="dirPervou" class="etiqueta">dirección: </label></td>
-                    <td><input id="dirPervou" name="dirPervou" type="text"></td>
                 </tr>                                           
                 <tr>
                     <td colspan="2"><input type="submit" value="Grabar" ></td>
@@ -197,36 +189,12 @@ include_once('cabecera.php');
                         <th>Ape Paterno</th>
                         <th>Ape Materno</th>
                         <th>email</th>
-                        <th>telf</th>
                         <th>Universidad</th>
                         <th>codigoUni</th>
-                        <th>dirección</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr >
-                        <td>72887025</td>
-                        <td>124353</td>
-                        <td>23-12-2014</td>
-                        <td>servicios libreria</td>
-                        <td>S/.100</td>
-                        <td>72881025</td>
-                        <td>72881025</td>
-                        <td>72881025</td>
-                        <td>72881025</td>
-                    </tr>
-                    <tr  class="alt">
-                        <td>72887025</td>
-                        <td>124353</td>
-                        <td>23-12-2014</td>
-                        <td>servicios libreria</td>
-                        <td>S/.100</td>
-                        <td>72881025</td>
-                        <td>72881025</td>
-                        <td>72881025</td>
-                        <td>72881025</td>
-
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>

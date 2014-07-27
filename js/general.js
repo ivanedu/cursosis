@@ -60,21 +60,21 @@ $(document).ready(function(){
     });
     
    
-    $("#depUni").change(function(){   
-        
-        if(this.value!=0){
+    $("#DNIvou").keyup(function(){   
+        var dni=this.value;
+        if(dni>9999999 && dni<100000000){
             
             $.ajax({
-                url: "listarTablaUnixDep.php",
+                url: "buscarAlumnoxDNI.php",
                 type: "POST",
-                data: "busDepUni="+this.value,                
+                data: "DNIvou="+this.value,                
                 success:function(datos){                    
                     
-                    $("#tabUni tbody").html(datos);
+                    $("#tabPervou tbody").html(datos);
                     
                 },
                 error:function(){
-                    $("#tabUni tbody").html("Error al listar");
+                    $("#tabPervou tbody").html("Error al listar");
                 }
             });
 
