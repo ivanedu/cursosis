@@ -62,24 +62,39 @@ $(document).ready(function(){
    
     $("#DNIvou").keyup(function(){   
         var dni=this.value;
-        if(dni>9999999 && dni<100000000){
-            
+        if(dni>9999999 && dni<100000000){            
             $.ajax({
                 url: "buscarAlumnoxDNI.php",
                 type: "POST",
                 data: "DNIvou="+this.value,                
-                success:function(datos){                    
-                    
+                success:function(datos){
                     $("#tabPervou tbody").html(datos);
-                    
                 },
                 error:function(){
                     $("#tabPervou tbody").html("Error al listar");
                 }
             });
-
-        }
-         
+        }else{
+            $("#tabPervou tbody").html("DNI incorrecto");
+        }         
+    });
+    $("#idDocvou").keyup(function(){   
+        var dni=this.value;
+        if(dni>9999999 && dni<100000000){            
+            $.ajax({
+                url: "buscarDOCxDNI.php",
+                type: "POST",
+                data: "idDocvou="+this.value,                
+                success:function(datos){
+                    $("#tabVouxID tbody").html(datos);
+                },
+                error:function(){
+                    $("#tabVouxID tbody").html("Error al listar");
+                }
+            });
+        }else{
+            $("#tabVouxID tbody").html("DNI incorrecto");
+        }         
     });
     
 });

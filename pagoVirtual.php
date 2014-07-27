@@ -60,26 +60,12 @@ include_once('cabecera.php');
                         <th>fecha</th>
                         <th>nombre</th>
                         <th>monto</th>
+                        <th>multiple</th>
                         <th>imagen</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr >
-                        <td>72887025</td>
-                        <td>124353</td>
-                        <td>23-12-2014</td>
-                        <td>servicios libreria</td>
-                        <td>S/.100</td>
-                        <td>72881025</td>
-                    </tr>
-                    <tr  class="alt">
-                        <td>72887025</td>
-                        <td>124353</td>
-                        <td>23-12-2014</td>
-                        <td>servicios libreria</td>
-                        <td>S/.100</td>
-                        <td>72881025</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -100,22 +86,7 @@ include_once('cabecera.php');
                     </tr>
                 </thead>
                 <tbody>
-                    <tr >
-                        <td>72887025</td>
-                        <td>124353</td>
-                        <td>23-12-2014</td>
-                        <td>servicios libreria</td>
-                        <td>S/.100</td>
-                        <td>72881025</td>
-                    </tr>
-                    <tr  class="alt">
-                        <td>72887025</td>
-                        <td>124353</td>
-                        <td>23-12-2014</td>
-                        <td>servicios libreria</td>
-                        <td>S/.100</td>
-                        <td>72881025</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
