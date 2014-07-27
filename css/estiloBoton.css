@@ -1,0 +1,111 @@
+
+
+
+	.button, .button:visited { /* botones genéricos */
+background: #222 url(http://sites.google.com/site/zavaletaster/Home/overlay.png) repeat-x;
+display: inline-block;
+padding: 5px 10px 6px;
+color: #FFF;
+text-decoration: none;
+-moz-border-radius: 6px;
+-webkit-border-radius: 6px;
+-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+border-top: 0px;
+border-left: 0px;
+border-right: 0px;
+border-bottom: 1px solid rgba(0,0,0,0.25);
+position: relative;
+cursor:pointer;
+
+}
+
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+border: none;
+}
+
+.button:hover { /* el efecto hover */
+background-color: #111
+color: #FFF;
+}
+
+.button:active{ /* el efecto click */
+top: 1px;
+}
+
+/* botones pequeños */
+.small.button, .small.button:visited {
+font-size: 11px ;
+}
+
+/* botones medianos */
+.button, .button:visited,.medium.button, .medium.button:visited {
+font-size: 13px;
+font-weight: bold;
+line-height: 1;
+text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+}
+
+/* botones grandes */
+.large.button, .large.button:visited {
+font-size:14px;
+padding: 8px 14px 9px;
+}
+
+/* botones extra grandes */
+.super.button, .super.button:visited {
+font-size: 34px;
+
+}
+
+.pink.button { 
+	background-color: #E22092;
+	border-radius: 7px;
+	height: 8%;
+	width: 80%; 
+	font-family: Century Gothic;
+	font-size: 100%;
+	border: 6px double black;
+	padding: 8px 10px 8px 80px;
+
+}
+.pink.button:hover{ background-color: #C81E82; }
+
+.green.button, .green.button:visited { background-color: #91BD09; padding: 8px 12px 8px ; }
+.green.button:hover{ background-color: #749A02; }
+
+.red.button, .red.button:visited { background-color: #E62727;  padding: 8px 12px 8px ;}
+.red.button:hover{ background-color: #CF2525; }
+
+.orange.button, .orange.button:visited { 
+	background-color: #FF5C00; 
+	border-radius: 7px;
+	height: 50px;
+	width: 50%; 
+	font-family: Segoe Print;
+	font-size: 130%;
+	border: 6px double black;
+
+}
+.orange.button:hover{ background-color: #D45500; }
+
+.blue.button, .blue.button:visited { 
+	background-color: #2981E4;
+ 	padding: 8px 12px 8px ;
+
+ }
+.blue.button:hover{ background-color: #2575CF; }
+
+.yellow.button, .yellow.button:visited { 
+	background-color: #387280;
+	font-family: Maiandra GD;
+	padding: 8px 12px 8px ;
+ }
+
+.yellow.button:hover{ background-color: #66B3C5; }
+

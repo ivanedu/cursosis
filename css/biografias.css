@@ -1,0 +1,195 @@
+#header{
+	width: 969px;
+	height: 282px;
+	margin: auto;
+	margin-top: 3%;
+	border: dashed gray 1px;
+	background-image: url('../img/biografias.jpg');
+	border-radius: 7px;
+}
+
+#title{
+
+	font-family: Segoe Print;
+	font-size: 40px;
+	width: 150px;
+	margin-top: 10%;
+	margin-left: 16%;
+
+}
+
+#contBio{
+	width: 960px;
+	height: 810px;
+	margin: auto;
+	margin-top: 1%;
+	border-radius: 7px;
+	margin-bottom: 2%;
+}
+
+.bio{
+	float: left;
+	width: 31.3%;
+	height: 800px;
+	margin-top: 3.3%;
+
+}
+
+#bio2{
+	float: left;
+	width: 31.3%;
+	height: 300px;
+	margin-top: 250px;
+	margin-right: 2%;
+	margin-left: 2%;
+
+}
+
+.insta{
+	width: 300px;
+	height: 326px;
+	margin-bottom: 20%;
+	background-image: url("../img/insta.png");
+	-webkit-transition: all 0.5s ease-out;
+   	-moz-transition: all 0.5s ease;
+   	-o-transition: all 0.5s ease;  
+
+}
+
+.insta:hover{
+	-webkit-transform: rotate(-7deg);
+   	-moz-transform: rotate(-7deg);
+    -o-transform: rotate(-7deg); 
+}
+
+
+.fotobio{
+	width: 250px;
+	height: 250px;
+	margin: auto;
+	position:relative; 
+	z-index: 0; 
+	border: dashed 1px;
+}
+
+.fotobio img{
+	width: 100%;
+	height: 100%;
+	
+}
+
+.nombrebio{
+	width: 230px;
+	height: 55px;
+	margin-left: 60px;
+	position:relative; 
+	z-index: 1;
+	background-image: url("../img/hoja1.png");  
+}
+
+.stilonombre{
+	font-family: Maiandra GD;
+	margin-left: 45%;
+	font-size: 22px;
+}
+
+.stilonombre a{
+	text-decoration: none;
+	color: black;
+}
+
+
+#contallbio{
+	width: 960px;
+	height: 650px;
+	margin: auto;
+	background-image: url("../img/biofondo1.jpg");
+	margin-top: 2%;
+	border-radius: 7px;
+	margin-bottom: 2%;
+
+}
+
+.persona{
+	float: left;
+	width: 40%;
+	height: 600px;
+	margin-top: 5.3%;
+	
+}
+
+.persona img{
+	width: 100%;
+	height: 100%;
+}
+
+
+.bio1{
+	float: left;
+	width: 50%;
+	height: 600px;
+	margin-left: 2%;
+	margin-top: 2%;
+}
+
+.cintanombre{
+	width: 100%;
+	height: 360px;
+	margin-top: -10%;
+	position: relative;
+	z-index: 0;
+}
+
+.cintanombre img{
+	width: 100%;
+	height: 100%;
+}
+
+.titulocinta{
+	position: relative;
+	z-index: 1;
+	color: white;
+	font-family: Maiandra GD;
+	font-size: 40px;
+	width: 300px;
+	margin-top: -51%;
+	height: 40px;
+	margin-left: 20%;
+	text-align:center;
+}
+
+.textbio{
+	width: 83.5%;
+	height: 500px;
+	margin-top: -58%;
+	margin-left: 8.3%;
+	background-image: url("../img/cabeza1.png");
+
+}
+
+.biografiatext{
+	width: 85%;
+	height: 70%;
+	font-size: 15px;
+	font-family: Segoe Print;
+	text-align: justify;
+	margin-top: 24%;
+	margin-left: 7%;
+}
+
+#volver{
+	margin: auto;
+	background-image: url("../img/noti.png");
+	width: 220px;
+	height: 26px;
+	text-align: center;
+	font-family: Courier;
+	font-size: 20px;
+	margin-bottom: 2%;
+	margin-top: 7%;
+}
+
+#volver a{
+	text-decoration: none;
+	color: white;
+}

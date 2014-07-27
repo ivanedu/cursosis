@@ -1,0 +1,140 @@
+#header{
+	width: 969px;
+	height: 282px;
+	margin: auto;
+	margin-top: 3%;
+	border: dashed gray 1px;
+	background-image: url('../img/fotos.jpg');
+	border-radius: 7px;
+}
+
+#title{
+
+	font-family: Segoe Print;
+	font-size: 40px;
+	width: 150px;
+	margin-top: 10%;
+	margin-left: 14%;
+
+}
+
+#contfotos{
+	width: 960px;
+	height: 800px;
+	margin: auto;
+	margin-top: 3%;
+}
+
+.marcofoto{
+	float: left;
+	margin-right: 1%;
+	margin-left: 1%;
+	margin-bottom: 4%;
+	width: 300px;
+	height: 360px;
+	background-image: url("../img/marcofotos.png");
+}
+
+.imagenFoto{
+	margin-left: 7.2%;
+	margin-top: 9%;
+	width: 86.5%;
+	height: 71%;
+	position: relative;
+	z-index: 1;
+	
+}
+
+.imagenFoto img{
+	width: 100%;
+	height: 100%;
+}
+
+.tituloFoto{
+
+	width: 95%;
+	height: 20%;
+	margin-left: 3%;
+	background-image: url("../img/titulofoto.png");
+	position: relative;
+	z-index: 0;
+	margin-top: -4%;
+}
+
+.textoFoto{
+	float: left;
+	width: 60%;
+	height: 70%;
+	margin-top: 5%;
+	margin-left: 5%;
+	font-family: Segoe Print;
+	font-size: 15px;
+}
+
+.botonVer{
+	float: left;
+	width: 28%;
+	height: 30%;
+	margin-top: 13%;
+	background-image: url("../img/noti.png");
+	background-repeat:no-repeat;
+	background-position:100%;
+}
+
+.verFoto{
+	
+	font-family: Maiandra GD;
+	font-size: 17px;
+	margin-left: 18%;
+}
+
+.verFoto a{
+	text-decoration: none;
+	color: white;
+}
+
+
+.unafoto{
+	float: left;
+	margin-right: 1%;
+	margin-left: 1%;
+	margin-bottom: 4%;
+	width: 300px;
+	height: 360px;
+	background-repeat: no-repeat;
+	background-image: url("../img/unafoto.png");
+}
+
+.titulounaFoto{
+
+	width: 95%;
+	height: 20%;
+	margin-left: 3%;
+	background-image: url("../img/titulofoto.png");
+	position: relative;
+	z-index: 0;
+	
+}
+
+.textunafoto{
+	font-family: Rage Italic;
+	font-size: 30px;
+	margin-left: 10%;
+}
+
+
+#volver{
+	margin: auto;
+	background-image: url("../img/noti.png");
+	width: 220px;
+	height: 26px;
+	text-align: center;
+	font-family: Courier;
+	font-size: 20px;
+	margin-bottom: 2%;
+}
+
+#volver a{
+	text-decoration: none;
+	color: white;
+}

@@ -1,0 +1,159 @@
+#header{
+	width: 969px;
+	height: 282px;
+	margin: auto;
+	margin-top: 3%;
+	border: dashed gray 1px;
+	background-image: url('../img/pelicula.jpg');
+	border-radius: 7px;
+}
+
+#title{
+
+	font-family: Segoe Print;
+	font-size: 40px;
+	width: 200px;
+	margin-top: 11%;
+	margin-left: 16%;
+
+}
+
+
+#contPeli{
+	width: 960px;
+	height: 640px;
+	margin: auto;
+	margin-top: 3%;
+
+	
+}
+
+#afiche{
+	float: left;
+	width: 400px;
+	height: 600px;
+	position: relative;
+	z-index: 0;
+	margin-left: 3%;
+
+}
+
+#afiche img{
+	width: 100%;
+	height: 100%;	
+}
+
+#imagenAfiche{
+	
+	width: 320px;
+	height: 550px;
+	margin-left: 10%;
+}
+
+#imagenAfiche img{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 1;
+	margin-top: -180%;
+}
+
+#contSinop{
+	position: relative;
+	z-index: 1;
+	width: 70%;
+	margin: auto;
+	margin-top: -118%;
+}
+
+#sinopsis{
+	width: 500px;
+	height: 700px;
+	float:left;
+	margin-top: -4%;
+	margin-left: 3%;
+	position: relative;
+	z-index: 0;
+
+
+}
+
+#sinopsis img{
+	width: 100%;
+	height: 100%;
+}
+
+#tituloSinop{
+	font-family: Maiandra GD;
+	color: #A0000F;
+	font-size: 22px;
+
+
+}
+
+#textSinop{
+	font-family: Segoe Print;
+	font-size: 15px;
+	
+}
+
+#lineaSinop{
+	width: 100%;
+	height: 10px;
+	position: relative;
+	z-index: 1;
+	margin-top: 3%;
+	margin-bottom: 6%;
+}
+
+#lineaSinop img{
+	width: 100%;
+	height: 100%;
+}
+
+#trailer{
+	background-image: url("../img/hojaVideo.jpg");
+	width: 900px;
+	height: 480px;
+	margin: auto;
+	border-radius: 7px;
+	margin-bottom: 2%;
+}
+
+#tituloTrailer{
+	background-image: url("../img/nombreN.png");
+	width: 100%;
+	height: 60px;
+	background-repeat: no-repeat;
+	background-position: 40% ;
+	
+
+}
+
+#textTrailer{
+	float: left;
+	color: white;
+	font-family: Courier;
+	font-size: 22px;
+	margin-left: 4%;
+}
+
+#iconoTrailer{
+	float: left;
+	background-image: url("../img/icons.png");
+	background-repeat: no-repeat;
+	background-position: 50% 39%;
+	width: 40px;
+	height: 40px;
+	margin-left: 3%;
+	margin-top: -1%;
+}
+
+#videoTrailer{
+	width:640px;
+	height: 360px;
+	margin: auto;
+	margin-top: 2.5%;
+	border: dashed 1px;
+	
+}
