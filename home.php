@@ -20,17 +20,7 @@ if(isset($_SESSION["validado"])){
 		<script type="text/javascript" src="js/jquery.js"></script>
 	</head>
 	<body id="body">
-			<div id="fb-root"></div>
-			<script>(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) return;
-			  js = d.createElement(s); js.id = id;
-			  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));</script>
-
-
-			
+						
 		
 		<div id="cabecera">	
 			<div id="oneD"><img src="img/1d.png" alt="Logo One Direction" title="Logo One Direction"></div>				
@@ -154,10 +144,7 @@ if(isset($_SESSION["validado"])){
 					<div id="f"><img src="img/face.png"></div>
 					<div id="ultF">Facebook</div>
 				</div>
-				<div id="comentF">
-					<div class="fb-like-box" data-href="https://www.facebook.com/onedirectionmusic?fref=ts" data-width="250" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
-					<div class="fb-comments" data-href="https://www.facebook.com/onedirectionmusic?fref=ts" data-width="257" data-numposts="3" data-colorscheme="light"></div>
-				</div>
+				
 			</div>
 			<div id="red3">
 				<div id="twitter">
@@ -166,10 +153,7 @@ if(isset($_SESSION["validado"])){
 				</div>
 				<div id="comentT">
 					
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-			<a href="https://twitter.com/onedirection" class="twitter-follow-button" data-dnt="true">Follow @onedirection</a>
-			<blockquote class="twitter-tweet" lang="es"><p>Who saw the guys perform <a href="https://twitter.com/search?q=%23StoryOfMyLife&amp;src=hash">#StoryOfMyLife</a> on <a href="https://twitter.com/XFactorUSA">@XFactorUSA</a> this year? Here’s the video if you missed it! 1DHQ x <a href="http://t.co/bmARqjYQdX">http://t.co/bmARqjYQdX</a></p>&mdash; One Direction (@onedirection) <a href="https://twitter.com/onedirection/statuses/412281070516568064">diciembre 15, 2013</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+			
 				</div>
 			</div>
 		</div>
