@@ -18,7 +18,7 @@ class conexion {
 }
     
      function conectar($bd){
-        $this->con=mysql_connect('localhost', 'root', '');
+        $this->con=mysql_connect('localhost', 'root', '1234');
         mysql_select_db($bd,$this->con);
     }
     
