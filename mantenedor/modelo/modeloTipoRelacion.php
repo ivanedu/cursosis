@@ -5,122 +5,142 @@ include_once 'modeloConexion.php';
 class ModeloTipoRelacion {
 
     private $param = array();
-    private $conexion = null;
-    private $result = null;
+    private $modeloConexion = null;
 
-    function __construct() {
-        $this->conexion = ModeloConexion::getConexion();
+    public function __construct() {
+        $this->modeloConexion = new ModeloConexion();
+        $this->modeloConexion->abrirConexion();
     }
 
-    function cerrarAbrir() {
-        mysql_close($this->conexion);
-        $this->conexion = ModeloConexion::getConexion();
+    public function ejecutarProcedimientoAlmacenado($opcion = '', $param = null, $modeloConexion = null) {
+        if ($param == null)
+            $param = $this->param;
+        if ($modeloConexion == null)
+            $modeloConexion = $this->modeloConexion;
+        /*
+         *
+         */
+        $modeloConexion->prepararConsulta("CALL spTipoRelacion(?,?,?,?,?,?)");
+        $modeloConexion->enlazarParametrosConsulta(array('string', $opcion));
+        $modeloConexion->enlazarParametrosConsulta(array('number', $param['inicio']));
+        $modeloConexion->enlazarParametrosConsulta(array('number', $param['final']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['consulta']));
+        $modeloConexion->enlazarParametrosConsulta(array('number', $param['tiprelId']));
+        $modeloConexion->enlazarParametrosConsulta(array('string', $param['tiprelNombre']));
+        $modeloConexion->ejecutarConsulta();
     }
 
-    function ejecutarConsulta($opcion = '') {
-        $consultaSql = "call spTipoRelacion(";
-        $consultaSql.="'" . $opcion . "',";
-        $consultaSql.=$this->param['inicio'] . ",";
-        $consultaSql.=$this->param['final'] . ",";
-        $consultaSql.=$this->param['tiprelId'] . ",";
-        $consultaSql.="'" . $this->param['tiprelNombre'] . "')";
-        $this->result = mysql_query($consultaSql);
-    }
-
-    function obtenerCampoUnico($campo) {
-        $dato = null;
-        while ($fila = mysql_fetch_array($this->result)) {
-            $dato = $fila[$campo];
-        }
-        return $dato;
-    }
-
-    function obtenerCamposMultiples($campos) {
-        $datos = array();
-        if(count($campos)>0){
-            while ($fila = mysql_fetch_array($this->result)) {
-                $datosFila = array();
-                for($i=0;$i<count($campos);$i++)
-                    $datosFila[$campos[$i]]=$fila[$campos[$i]];
-                array_push($datos, $datosFila);
-            }
-        }
-        return $datos;
-    }
-
-    function gestionar($param) {
+    public function gestionar($param) {
         $this->param = $param;
+        $opcionCorrecta = true;
         switch ($this->param['opcion']) {
             case "registrar" :
-                echo $this->registrar();
+                $resultadoGestion = $this->registrar();
                 break;
             case "editar" :
-                echo $this->editar();
+                $resultadoGestion = $this->editar();
                 break;
             case "eliminar" :
-                echo $this->eliminar();
+                $resultadoGestion = $this->eliminar();
                 break;
             case "listarpagina" :
-                echo $this->listarpagina();
+                if ($this->param['consulta'] == '') {
+                    $resultadoGestion = $this->listarpagina();
+                } else {
+                    $resultadoGestion = $this->filtrarpagina();
+                }
                 break;
             case "listartodo" :
-                echo $this->listartodo();
+                if ($this->param['consulta'] == '') {
+                    $resultadoGestion = $this->listartodo();
+                } else {
+                    $resultadoGestion = $this->filtrartodo();
+                }
                 break;
-            default:break;
+            default:
+                $opcionCorrecta = false;
+                $resultadoGestion = "<span style='color:rgb(255,0,0);'>ERROR</span> : Opcion no encontrada</br>";
+                break;
         }
-        mysql_close($this->conexion);
+        if ($opcionCorrecta)
+            $this->modeloConexion->cerrarConexion();
+        return $resultadoGestion;
     }
-    function registrar() {
-        $this->ejecutarConsulta('registrarValidacion');
-        $respuesta = $this->obtenerCampoUnico('respuesta');
-        if ($respuesta=='') {
-            $this->cerrarAbrir();
-            $this->ejecutarConsulta('registrar');
-            $respuesta = "Registro Satisfactorio";
+
+    private function registrar() {
+        $this->ejecutarProcedimientoAlmacenado('registrarvalidacion');
+        $respuesta = $this->modeloConexion->obtenerCampoUnico('respuesta');
+        if ($respuesta == '') {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('registrar');
         }
-        echo '{resultado:true,mensaje: "'.$respuesta.'"}';
+        return '{resultado:' . ($respuesta == '' ? 'true' : 'false') . ',mensaje: "' . ($respuesta == '' ? 'Registro Satisfactorio' : $respuesta) . '"}';
     }
-    function editar() {
-        $this->ejecutarConsulta('editarValidacion');
-        $respuesta = $this->obtenerCampoUnico('respuesta');
-        if ($respuesta=='') {
-            $this->cerrarAbrir();
-            $this->ejecutarConsulta('editar');
-            $respuesta = "Edicion Satisfactoria";
+
+    private function editar() {
+        $this->ejecutarProcedimientoAlmacenado('editarvalidacion');
+        $respuesta = $this->modeloConexion->obtenerCampoUnico('respuesta');
+        if ($respuesta == '') {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('editar');
         }
-        echo '{resultado:true,mensaje: "'.$respuesta.'"}';
+        return '{resultado:' . ($respuesta == '' ? 'true' : 'false') . ',mensaje: "' . ($respuesta == '' ? 'Edicion Satisfactoria' : $respuesta) . '"}';
     }
-    function eliminar() {
-        $this->ejecutarConsulta('eliminarValidacion');
-        $respuesta = $this->obtenerCampoUnico('respuesta');
-        if ($respuesta=='') {
-            $this->cerrarAbrir();
-            $this->ejecutarConsulta('eliminar');
-            $respuesta = "Eliminacion Satisfactoria";
+
+    private function eliminar() {
+        $this->ejecutarProcedimientoAlmacenado('eliminarvalidacion');
+        $respuesta = $this->modeloConexion->obtenerCampoUnico('respuesta');
+        if ($respuesta == '') {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('eliminar');
         }
-        echo '{resultado:true,mensaje: "'.$respuesta.'"}';
+        return '{resultado:' . ($respuesta == '' ? 'true' : 'false') . ',mensaje: "' . ($respuesta == '' ? 'Eliminacion Satisfactorio' : $respuesta) . '"}';
     }
-    function listarpagina() {
-        $this->ejecutarConsulta('listarContador');
-        $total = $this->obtenerCampoUnico('total');
+
+    private function listarpagina() {
+        $this->ejecutarProcedimientoAlmacenado('listarcontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
         $datos = array();
         if ($total > 0) {
-            $this->cerrarAbrir();
-            $this->ejecutarConsulta('listarpagina');
-            $datos = $this->obtenerCamposMultiples(array('tiprelId','tiprelNombre'));
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('listarpagina');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('tiprelId', 'tiprelNombre'));
         }
-        echo '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }
-    function listartodo() {
-        $this->ejecutarConsulta('listarContador');
-        $total = $this->obtenerCampoUnico('total');
+    private function filtrarpagina() {
+        $this->ejecutarProcedimientoAlmacenado('filtrarcontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
         $datos = array();
         if ($total > 0) {
-            $this->cerrarAbrir();
-            $this->ejecutarConsulta('listartodo');
-            $datos = $this->obtenerCamposMultiples(array('tiprelId','tiprelNombre'));
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('filtrarpagina');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('tiprelId', 'tiprelNombre'));
         }
-        echo '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    private function listartodo() {
+        $this->ejecutarProcedimientoAlmacenado('listarcontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('listartodo');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('tiprelId', 'tiprelNombre'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    
+    private function filtrartodo() {
+        $this->ejecutarProcedimientoAlmacenado('filtrarcontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('filtrartodo');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('tiprelId','tiprelNombre'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }
 }
 

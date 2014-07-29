@@ -1,12 +1,12 @@
 function getVistaTipoRelacion() {
-    var ventanaPopupRegitroTipoRelacion;
+    var ventanaPopupRegistroTipoRelacion;
     var ventanaPopupEdicionTipoRelacion;
     var formularioRegistroTipoRelacion;
     var formularioEdicionTipoRelacion;
     
     tiporelacionMascaraTipoRelacion = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Tipo Relacion : Store Tipo Relacion..."});
     tiporelacionCargadoInicial();
-    
+
     var gridTipoRelacion = new Ext.grid.GridPanel({
         title: 'Tipo Relacion',
         store: tiporelacionStoreTipoRelacion,
@@ -19,7 +19,7 @@ function getVistaTipoRelacion() {
                 iconCls: 'add',
                 handler: function() {
                     abrirFormularioRegistroTipoRelacion();
-                    ventanaPopupRegitroTipoRelacion.show();
+                    ventanaPopupRegistroTipoRelacion.show();
                 }
             }, '-', {
                 ref: '../btnEditarTipoRelacion',
@@ -82,14 +82,21 @@ function getVistaTipoRelacion() {
                         sortable: true,
                         width: 300
                     }],
+        plugins: [
+            new Ext.ux.grid.Search({
+                position: 'top',
+                store: tiporelacionStoreTipoRelacion,
+                params: {start: 0, limit: 10},
+                width: 200
+            })],
         selModel: new Ext.grid.RowSelectionModel({singleSelect: true})
     });
-    
+
     gridTipoRelacion.getSelectionModel().on('selectionchange', function(sm) {
         gridTipoRelacion.btnEditarTipoRelacion.setDisabled(sm.getCount() < 1);
         gridTipoRelacion.btnEliminarTipoRelacion.setDisabled(sm.getCount() < 1);
     });
-    
+
     function guardarRegistroTipoRelacion()
     {
         Ext.MessageBox.wait('Espere por favor...', "REGISTRO");
@@ -108,7 +115,7 @@ function getVistaTipoRelacion() {
                         verMessageBoxExito(datos.mensaje);
                         tiporelacionStoreTipoRelacion.reload();
                         formularioRegistroTipoRelacion.getForm().reset();
-                        ventanaPopupRegitroTipoRelacion.close();
+                        ventanaPopupRegistroTipoRelacion.close();
                     } else {
                         verMessageBoxError(datos.mensaje);
                     }
@@ -135,6 +142,12 @@ function getVistaTipoRelacion() {
                     if (evt.getKey() == evt.ENTER)
                     {
                         guardarRegistroTipoRelacion();
+                    } else {
+                        var ascii = evt.getKey();
+                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        {
+                            evt.stopEvent();
+                        }
                     }
                 }
             }
@@ -149,14 +162,14 @@ function getVistaTipoRelacion() {
             buttons: [{
                     text: 'Guardar',
                     iconCls: 'aceptar',
-                    handler: function(){
+                    handler: function() {
                         guardarRegistroTipoRelacion();
                     }
                 }, {
                     text: 'Cancelar',
                     iconCls: 'close',
                     handler: function() {
-                        ventanaPopupRegitroTipoRelacion.close();
+                        ventanaPopupRegistroTipoRelacion.close();
                     }
                 }]
         });
@@ -165,13 +178,13 @@ function getVistaTipoRelacion() {
             border: false,
             items: formularioRegistroTipoRelacion
         });
-        ventanaPopupRegitroTipoRelacion = new Ext.Window({
+        ventanaPopupRegistroTipoRelacion = new Ext.Window({
             title: 'Registro Tipo Relacion',
             closable: false,
             modal: true,
             width: 350,
-            constrain:true,
-            resizable : false,
+            constrain: true,
+            resizable: false,
             items: panelRegistroTipoRelacion
         });
     }
@@ -192,14 +205,13 @@ function getVistaTipoRelacion() {
                     var datos = Ext.util.JSON.decode(response.responseText);
                     if (datos.resultado)
                     {
-                        verMessageBoxExito(datos.mensaje)
+                        verMessageBoxExito(datos.mensaje);
                         tiporelacionStoreTipoRelacion.reload();
                         ventanaPopupEdicionTipoRelacion.close();
                     } else {
-                        verMessageBoxError(datos.mensaje)
+                        verMessageBoxError(datos.mensaje);
                     }
-
-                },
+                }
             });
         }
         else
@@ -215,7 +227,7 @@ function getVistaTipoRelacion() {
             width: '150',
             allowBlank: false,
             enableKeyEvents: true,
-            hidden:true,
+            hidden: true,
             listeners: {
                 keypress: function(my, evt) {
                     if (evt.getKey() == evt.ENTER)
@@ -236,6 +248,12 @@ function getVistaTipoRelacion() {
                     if (evt.getKey() == evt.ENTER)
                     {
                         guardarEdicionTipoRelacion();
+                    } else {
+                        var ascii = evt.getKey();
+                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        {
+                            evt.stopEvent();
+                        }
                     }
                 }
             }
@@ -251,7 +269,7 @@ function getVistaTipoRelacion() {
             buttons: [{
                     text: 'Guardar',
                     iconCls: 'aceptar',
-                    handler: function(){
+                    handler: function() {
                         guardarEdicionTipoRelacion()
                     }
                 }, {
@@ -269,18 +287,18 @@ function getVistaTipoRelacion() {
             items: formularioEdicionTipoRelacion
         });
         ventanaPopupEdicionTipoRelacion = new Ext.Window({
-            title: 'Editar Color',
+            title: 'Edicion Tipo Relacion',
             closeAction: 'hide',
             closable: false,
             modal: true,
             width: 350,
-            constrain:true,
-            resizable : false,
+            constrain: true,
+            resizable: false,
             items: panelEdicionTipoRelacion
         });
 
     }
-    
+
     function guardarEliminacionTipoRelacion(tiprelId)
     {
         Ext.Msg.show({
@@ -288,8 +306,8 @@ function getVistaTipoRelacion() {
             msg: '¿Esta seguro que desea eliminar?',
             buttons: Ext.Msg.YESNO,
             icon: Ext.MessageBox.WARNING,
-            fn:function(btn,text){
-                if(btn=='yes')
+            fn: function(btn, text) {
+                if (btn == 'yes')
                 {
                     Ext.MessageBox.wait('Espere por favor...', "ELIMINACION");
                     Ext.Ajax.request({

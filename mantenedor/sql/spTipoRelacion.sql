@@ -8,12 +8,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spTipoRelacion`(
 IN `ve_opcion` VARCHAR(50), 
 IN `ve_inicio` INT(11), 
 IN `ve_final` INT(11), 
+IN `ve_consulta` VARCHAR(50), 
 IN `ve_tiprelId` INT(11), 
 IN `ve_tiprelNombre` VARCHAR(50)
 )
 BEGIN
 	SET @start = ve_inicio; 
 	SET @limit = ve_final; 
+	set @consulta = ve_consulta;
 	IF ve_opcion = 'listarpagina' THEN
 		PREPARE stmt FROM "
 		SELECT
@@ -25,6 +27,18 @@ BEGIN
 		EXECUTE stmt USING @start,@limit;
 		DEALLOCATE PREPARE stmt;
 	END IF;
+	IF ve_opcion = 'filtrarpagina' THEN
+		PREPARE stmt FROM "
+		SELECT
+			tiprel.tiprelId,
+			tiprel.tiprelNombre
+		FROM tiporelacion tiprel
+		WHERE tiprel.tiprelNombre LIKE CONCAT(?,'%')
+		ORDER BY tiprel.tiprelId ASC
+		LIMIT ?,?";
+		EXECUTE stmt USING @consulta,@start,@limit;
+		DEALLOCATE PREPARE stmt;
+	END IF;
 	IF ve_opcion = 'listartodo' THEN
 		SELECT
 			tiprel.tiprelId,
@@ -32,17 +46,31 @@ BEGIN
 		FROM tiporelacion tiprel
 		ORDER BY tiprel.tiprelId ASC;
 	END IF;
-	IF ve_opcion = 'listarContador' THEN
+	IF ve_opcion = 'listarcontador' THEN
 		SELECT
 			COUNT(*) AS 'total'
 		FROM tiporelacion tiprel;
+	END IF;
+	IF ve_opcion = 'filtrartodo' THEN
+		SELECT
+			tiprel.tiprelId,
+			tiprel.tiprelNombre
+		FROM tiporelacion tiprel
+		WHERE tiprel.tiprelNombre LIKE CONCAT(ve_consulta,'%')
+		ORDER BY tiprel.tiprelId ASC;
+	END IF;
+	IF ve_opcion = 'filtrarcontador' THEN
+		SELECT
+			COUNT(*) AS 'total'
+		FROM tiporelacion tiprel
+		WHERE tiprel.tiprelNombre LIKE CONCAT(ve_consulta,'%');
 	END IF;
 	IF ve_opcion = 'registrar' THEN
 		INSERT INTO
 		tiporelacion(tiprelNombre)
 		VALUES(ve_tiprelNombre);
 	END IF;
-	IF ve_opcion = 'registrarValidacion' THEN
+	IF ve_opcion = 'registrarvalidacion' THEN
 		SET @existe = (
 		SELECT
 			COUNT(*)
@@ -62,7 +90,7 @@ BEGIN
 		WHERE
 			tiprel.tiprelId = ve_tiprelId;
 	END IF;
-	IF ve_opcion = 'editarValidacion' THEN
+	IF ve_opcion = 'editarvalidacion' THEN
 		SET @vi_tiprelNombre = (
 		SELECT 
 			tiprel.tiprelNombre
@@ -87,15 +115,15 @@ BEGIN
 		DELETE FROM tiporelacion 
 		WHERE tiprelId = ve_tiprelId;
 	END IF;
-	IF ve_opcion = 'eliminarValidacion' THEN
+	IF ve_opcion = 'eliminarvalidacion' THEN
 		SET @existedependencia = (
 		SELECT
 			COUNT(*)
 		FROM relacion rel
 		WHERE 
-			tiprel.tiprelId = ve_tiprelId
+			rel.tiprelId = ve_tiprelId
 		);
-		IF @existe = 0 THEN
+		IF @existedependencia = 0 THEN
 			SELECT '' AS 'respuesta';
 		ELSE
 			SELECT 'ERROR : Existe dependencias' AS 'respuesta';

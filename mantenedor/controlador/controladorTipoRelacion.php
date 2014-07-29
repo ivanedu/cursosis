@@ -6,6 +6,7 @@ $param = array();
 $param['opcion']='';
 $param['inicio']=0;
 $param['final']=10;
+$param['consulta']='';
 $param['tiprelId']=0;
 $param['tiprelNombre']='';
 
@@ -13,6 +14,8 @@ if (isset($_POST['opcion']))
     $param['opcion'] = $_POST['opcion'];
 if (isset($_POST['start']))
     $param['inicio'] = $_POST['start'];
+if (isset($_POST['query']))
+    $param['consulta'] = $_POST['query'];
 if (isset($_POST['limit']))
     $param['final'] = $_POST['limit'];
 if (isset($_POST['tiprelId']))

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-07-2014 a las 10:28:16
+-- Tiempo de generación: 29-07-2014 a las 10:36:16
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -25,18 +25,22 @@ DELIMITER $$
 -- Procedimientos
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spPersona`(
-IN `opcion` VARCHAR(50), 
-IN `inicio` INT(11), 
-IN `final` INT(11), 
-IN `perId` INT(11), 
-IN `perNombre` VARCHAR(50), 
-IN `perApePaterno` VARCHAR(50), 
-IN `perApeMaterno` VARCHAR(50), 
-IN `perEdad` INT(11), 
-IN `perSexo` CHAR(1)
+IN `ve_opcion` VARCHAR(50), 
+IN `ve_inicio` INT(11), 
+IN `ve_final` INT(11), 
+IN `ve_consulta` VARCHAR(50), 
+IN `ve_perId` INT(11), 
+IN `ve_perNombre` VARCHAR(50), 
+IN `ve_perApePaterno` VARCHAR(50), 
+IN `ve_perApeMaterno` VARCHAR(50), 
+IN `ve_perEdad` INT(11), 
+IN `ve_perSexo` CHAR(1)
 )
 BEGIN
-	IF opcion = 'listar' THEN
+	SET @start = ve_inicio; 
+	SET @limit = ve_final; 
+	IF ve_opcion = 'listarpagina' THEN
+		PREPARE stmt FROM "
 		SELECT
 			per.perId,
 			per.perNombre,
@@ -44,12 +48,200 @@ BEGIN
 			per.perApeMaterno,
 			per.perEdad,
 			per.perSexo
-		FROM persona per;
+		FROM persona per
+		ORDER BY 
+			per.perApePaterno ASC,
+			per.perApeMaterno ASC,
+			per.perNombre ASC
+		LIMIT ?,?";
+		EXECUTE stmt USING @start,@limit;
+		DEALLOCATE PREPARE stmt;
 	END IF;
-	IF opcion = 'listarContador' THEN
+	IF ve_opcion = 'listartodo' THEN
+		SELECT
+			per.perId,
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) AS 'perNombreCompleto'
+		FROM persona per
+		ORDER BY 
+			per.perApePaterno ASC,
+			per.perApeMaterno ASC,
+			per.perNombre ASC;
+	END IF;
+	IF ve_opcion = 'listarcontador' THEN
 		SELECT
 			COUNT(*) AS 'total'
 		FROM persona per;
+	END IF;
+	IF ve_opcion = 'filtrarcontador' THEN
+		SELECT
+			COUNT(*) AS 'total'
+		FROM persona per
+		WHERE
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) LIKE CONCAT(ve_consulta,'%');
+	END IF;
+	IF ve_opcion = 'filtrartodomenosperidcontador' THEN
+		SELECT
+			COUNT(*) AS 'total'
+		FROM persona per
+		WHERE
+			per.perId<>ve_perId AND
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) LIKE CONCAT(ve_consulta,'%');
+	END IF;
+	IF ve_opcion = 'filtrartodomenosperid' THEN
+		SELECT
+			per.perId,
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) AS 'perNombreCompleto'
+		FROM persona per
+		WHERE
+			per.perId<>ve_perId AND
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) LIKE CONCAT(ve_consulta,'%')
+		ORDER BY 
+			per.perApePaterno ASC,
+			per.perApeMaterno ASC,
+			per.perNombre ASC;
+	END IF;
+	IF ve_opcion = 'filtrartodo' THEN
+		SELECT
+			per.perId,
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) AS 'perNombreCompleto'
+		FROM persona per
+		WHERE
+			CONCAT(per.perApePaterno,' ',per.perApeMaterno,', ',per.perNombre) LIKE CONCAT(ve_consulta,'%')
+		ORDER BY 
+			per.perApePaterno ASC,
+			per.perApeMaterno ASC,
+			per.perNombre ASC;
+	END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spRelacion`(
+IN `ve_opcion` VARCHAR(50), 
+IN `ve_inicio` INT(11), 
+IN `ve_final` INT(11), 
+IN `ve_consulta` VARCHAR(50), 
+IN `ve_relId` INT(11), 
+IN `ve_perIdRelacionador` INT(11),
+IN `ve_perIdRelacionado` INT(11),
+IN `ve_tiprelId` INT(11)
+)
+BEGIN
+	SET @start = ve_inicio; 
+	SET @limit = ve_final; 
+	IF ve_opcion = 'listarpagina' THEN
+		PREPARE stmt FROM "
+		SELECT
+			rel.relId,
+			rel.perIdRelacionador,
+			rel.perIdRelacionado,
+			rel.tiprelId
+		FROM relacion rel
+		JOIN persona perRelacionador ON rel.perIdRelacionador = perRelacionador.perId
+		JOIN persona perRelacionado ON rel.perIdRelacionado = perRelacionado.perId
+		ORDER BY 
+			perRelacionador.perApePaterno ASC,
+			perRelacionador.perApeMaterno ASC,
+			perRelacionador.perNombre ASC,
+			perRelacionado.perApePaterno ASC,
+			perRelacionado.perApeMaterno ASC,
+			perRelacionado.perNombre ASC
+		LIMIT ?,?";
+		EXECUTE stmt USING @start,@limit;
+		DEALLOCATE PREPARE stmt;
+	END IF;
+	IF ve_opcion = 'listartodo' THEN
+		SELECT
+			rel.relId,
+			rel.perIdRelacionador,
+			rel.perIdRelacionado,
+			rel.tiprelId
+		FROM relacion rel
+		JOIN persona perRelacionador ON rel.perIdRelacionador = perRelacionador.perId
+		JOIN persona perRelacionado ON rel.perIdRelacionado = perRelacionado.perId
+		ORDER BY 
+			perRelacionador.perApePaterno ASC,
+			perRelacionador.perApeMaterno ASC,
+			perRelacionador.perNombre ASC,
+			perRelacionado.perApePaterno ASC,
+			perRelacionado.perApeMaterno ASC,
+			perRelacionado.perNombre ASC;
+	END IF;
+	IF ve_opcion = 'listarcontador' THEN
+		SELECT
+			COUNT(*) AS 'total'
+		FROM relacion rel;
+	END IF;
+	IF ve_opcion = 'registrar' THEN
+		SET @vi_relId =(
+		SELECT
+			relId
+		FROM relacion rel
+		WHERE rel.perIdRelacionador = ve_perIdRelacionador
+		ORDER BY rel.relId DESC
+		LIMIT 1
+		);
+		SET @vi_relId = (
+		CASE
+		WHEN @vi_relId IS NULL THEN 1
+		ELSE @vi_relId+1
+		END
+		);
+		INSERT INTO
+		relacion(relId,perIdRelacionador,perIdRelacionado,tiprelId)
+		VALUES(@vi_relId,ve_perIdRelacionador,ve_perIdRelacionado,ve_tiprelId);
+	END IF;
+	IF ve_opcion = 'registrarvalidacion' THEN
+		SET @existe = (
+		SELECT
+			COUNT(*)
+		FROM relacion rel
+		WHERE 
+			rel.perIdRelacionador = ve_perIdRelacionador AND
+			rel.perIdRelacionado = ve_perIdRelacionado
+		);
+		IF @existe = 0 THEN
+			SELECT '' AS 'respuesta';
+		ELSE
+			SELECT 'ERROR : Ya existe relacion' AS 'respuesta';
+		END IF;
+	END IF;
+	IF ve_opcion = 'editar' THEN
+		UPDATE relacion rel
+		SET
+			rel.perIdRelacionado = ve_perIdRelacionado,
+			rel.tiprelId = ve_tiprelId
+		WHERE
+			rel.relId = ve_relId AND
+			rel.perIdRelacionador = ve_perIdRelacionador;
+	END IF;
+	IF ve_opcion = 'editarvalidacion' THEN
+		SET @vi_perIdRelacionado = (
+		SELECT 
+			rel.perIdRelacionado
+		FROM relacion rel
+		WHERE 
+			rel.relId = ve_relId AND
+			rel.perIdRelacionador = ve_perIdRelacionador
+		);
+		SET @existe = (
+		SELECT
+			COUNT(*)
+		FROM relacion rel
+		WHERE 
+			rel.perIdRelacionador = ve_perIdRelacionador AND
+			rel.perIdRelacionado = ve_perIdRelacionado AND
+			rel.perIdRelacionado <> @vi_perIdRelacionado
+		);
+		IF @existe = 0 THEN
+			SELECT '' AS 'respuesta';
+		ELSE
+			SELECT 'ERROR : Ya existe relacion' AS 'respuesta';
+		END IF;
+	END IF;
+	IF ve_opcion = 'eliminar' THEN
+		DELETE FROM relacion 
+		WHERE 
+			perIdRelacionador = ve_perIdRelacionador AND
+			relId = ve_relId;
 	END IF;
 END$$
 
@@ -57,12 +249,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spTipoRelacion`(
 IN `ve_opcion` VARCHAR(50), 
 IN `ve_inicio` INT(11), 
 IN `ve_final` INT(11), 
+IN `ve_consulta` VARCHAR(50), 
 IN `ve_tiprelId` INT(11), 
 IN `ve_tiprelNombre` VARCHAR(50)
 )
 BEGIN
 	SET @start = ve_inicio; 
 	SET @limit = ve_final; 
+	set @consulta = ve_consulta;
 	IF ve_opcion = 'listarpagina' THEN
 		PREPARE stmt FROM "
 		SELECT
@@ -74,6 +268,18 @@ BEGIN
 		EXECUTE stmt USING @start,@limit;
 		DEALLOCATE PREPARE stmt;
 	END IF;
+	IF ve_opcion = 'filtrarpagina' THEN
+		PREPARE stmt FROM "
+		SELECT
+			tiprel.tiprelId,
+			tiprel.tiprelNombre
+		FROM tiporelacion tiprel
+		WHERE tiprel.tiprelNombre LIKE CONCAT(?,'%')
+		ORDER BY tiprel.tiprelId ASC
+		LIMIT ?,?";
+		EXECUTE stmt USING @consulta,@start,@limit;
+		DEALLOCATE PREPARE stmt;
+	END IF;
 	IF ve_opcion = 'listartodo' THEN
 		SELECT
 			tiprel.tiprelId,
@@ -81,17 +287,31 @@ BEGIN
 		FROM tiporelacion tiprel
 		ORDER BY tiprel.tiprelId ASC;
 	END IF;
-	IF ve_opcion = 'listarContador' THEN
+	IF ve_opcion = 'listarcontador' THEN
 		SELECT
 			COUNT(*) AS 'total'
 		FROM tiporelacion tiprel;
+	END IF;
+	IF ve_opcion = 'filtrartodo' THEN
+		SELECT
+			tiprel.tiprelId,
+			tiprel.tiprelNombre
+		FROM tiporelacion tiprel
+		WHERE tiprel.tiprelNombre LIKE CONCAT(ve_consulta,'%')
+		ORDER BY tiprel.tiprelId ASC;
+	END IF;
+	IF ve_opcion = 'filtrarcontador' THEN
+		SELECT
+			COUNT(*) AS 'total'
+		FROM tiporelacion tiprel
+		WHERE tiprel.tiprelNombre LIKE CONCAT(ve_consulta,'%');
 	END IF;
 	IF ve_opcion = 'registrar' THEN
 		INSERT INTO
 		tiporelacion(tiprelNombre)
 		VALUES(ve_tiprelNombre);
 	END IF;
-	IF ve_opcion = 'registrarValidacion' THEN
+	IF ve_opcion = 'registrarvalidacion' THEN
 		SET @existe = (
 		SELECT
 			COUNT(*)
@@ -111,7 +331,7 @@ BEGIN
 		WHERE
 			tiprel.tiprelId = ve_tiprelId;
 	END IF;
-	IF ve_opcion = 'editarValidacion' THEN
+	IF ve_opcion = 'editarvalidacion' THEN
 		SET @vi_tiprelNombre = (
 		SELECT 
 			tiprel.tiprelNombre
@@ -136,15 +356,15 @@ BEGIN
 		DELETE FROM tiporelacion 
 		WHERE tiprelId = ve_tiprelId;
 	END IF;
-	IF ve_opcion = 'eliminarValidacion' THEN
+	IF ve_opcion = 'eliminarvalidacion' THEN
 		SET @existedependencia = (
 		SELECT
 			COUNT(*)
 		FROM relacion rel
 		WHERE 
-			tiprel.tiprelId = ve_tiprelId
+			rel.tiprelId = ve_tiprelId
 		);
-		IF @existe = 0 THEN
+		IF @existedependencia = 0 THEN
 			SELECT '' AS 'respuesta';
 		ELSE
 			SELECT 'ERROR : Existe dependencias' AS 'respuesta';
@@ -198,6 +418,23 @@ CREATE TABLE IF NOT EXISTS `relacion` (
   KEY `fk_relacion_tiporelacion1_idx` (`tiprelId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `relacion`
+--
+
+INSERT INTO `relacion` (`relId`, `perIdRelacionador`, `perIdRelacionado`, `tiprelId`) VALUES
+(2, 2, 3, 1),
+(3, 2, 4, 3),
+(4, 2, 5, 3),
+(5, 2, 6, 3),
+(6, 2, 1, 5),
+(1, 3, 1, 2),
+(1, 4, 6, 4),
+(3, 4, 1, 2),
+(1, 5, 2, 3),
+(2, 5, 6, 1),
+(1, 6, 1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -208,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `tiporelacion` (
   `tiprelId` int(11) NOT NULL AUTO_INCREMENT,
   `tiprelNombre` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`tiprelId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
 -- Volcado de datos para la tabla `tiporelacion`
@@ -224,11 +461,20 @@ INSERT INTO `tiporelacion` (`tiprelId`, `tiprelNombre`) VALUES
 (7, 'Primo'),
 (8, 'Prima'),
 (9, 'Sobrino'),
-(10, 'Sobrina'),
 (11, 'MamÃ¡'),
 (12, 'PapÃ¡'),
-(13, 'Abuelo'),
-(14, 'Abuela');
+(14, 'Abuela'),
+(16, 'Tipo Relacion 01'),
+(17, 'Tipo Relacion 02'),
+(18, 'Tipo Relacion 03'),
+(19, 'Tipo Relacion 04'),
+(20, 'Tipo Relacion 05'),
+(21, 'Tipo Relacion 06'),
+(22, 'Tipo Relacion 07'),
+(23, 'Tipo Relacion 08'),
+(24, 'Tipo Relacion 09'),
+(25, 'Tipo Relacion 10'),
+(26, '...');
 
 --
 -- Restricciones para tablas volcadas

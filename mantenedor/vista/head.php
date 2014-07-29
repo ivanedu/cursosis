@@ -4,6 +4,7 @@
 <script type="text/javascript" src="ext/ext-all.js"></script>
 <script type="text/javascript" src="ext/ext-lang-es.js"></script>
 
+<script type="text/javascript" src="ext/ux/Ext.ux.grid.Search.js"></script>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
 <link rel="stylesheet" type="text/css" href="css/styleIcon.css" />
 <!--configuración-->
@@ -13,9 +14,11 @@
 
 <script type="text/javascript" src="js/storePersona.js"></script>
 <script type="text/javascript" src="js/storeTipoRelacion.js"></script>
+<script type="text/javascript" src="js/storeRelacion.js"></script>
 
 <script type="text/javascript" src="js/vistaPersona.js"></script>
 <script type="text/javascript" src="js/vistaTipoRelacion.js"></script>
+<script type="text/javascript" src="js/vistaRelacion.js"></script>
 
 <script type="text/javascript" src="js/vistaPrincipal.js"></script>
 <title>Sistema</title>

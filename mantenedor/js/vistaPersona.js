@@ -1,5 +1,9 @@
 function getVistaPersona() {
-
+    var ventanaPopupRegistroPersona;
+    var ventanaPopupEdicionPersona;
+    var formularioRegistroPersona;
+    var formularioEdicionPersona;
+    
     personaMascaraPersona = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Persona : Store Persona..."});
 
     personaCargadoInicial();
@@ -13,9 +17,50 @@ function getVistaPersona() {
         itemSelector: true,
         height : 400,
         tbar: [{
-                text: 'Persona',
-                tooltip: 'Crear Persona',
-                iconCls: 'add'
+                text: 'Registrar',
+                tooltip: 'Registrar Persona',
+                iconCls: 'add',
+                handler: function() {
+                    abrirFormularioRegistroPersona();
+                    ventanaPopupRegistroPersona.show();
+                }
+            }, '-', {
+                ref: '../btnEditarRelacion',
+                text: 'Editar',
+                tooltip: 'Editar Relacion',
+                iconCls: 'edit',
+                disabled: true,
+                listeners: {
+                    click: function() {
+                        var seleccionFila = gridPersona.getSelectionModel().getSelections();
+                        if (seleccionFila.length <= 0) {
+                            verMessageBoxAdvertencia("Debes seleccionar una fila");
+                        } else {
+                            abrirFormularioEdicionPersona();
+                            Ext.getCmp('paramedi_perId').setValue(seleccionFila[0].get('param_relId'));
+                            Ext.getCmp('paramedi_perNombre').setValue(seleccionFila[0].get('param_perIdRelacionador'));
+                            Ext.getCmp('paramedi_per').setValue(seleccionFila[0].get('param_perIdRelacionado'));
+                            Ext.getCmp('paramedi_tiprelId').setValue(seleccionFila[0].get('param_tiprelId'));
+                            ventanaPopupEdicionRelacion.show();
+                        }
+                    }
+                }
+            }, '-', {
+                ref: '../btnEliminarRelacion',
+                text: 'Eliminar',
+                tooltip: 'Eliminar Relacion',
+                iconCls: 'remove',
+                disabled: true,
+                listeners: {
+                    click: function() {
+                        var seleccionFila = gridRelacion.getSelectionModel().getSelections();
+                        if (seleccionFila.length <= 0) {
+                            verMessageBoxAdvertencia("Debes seleccionar una fila");
+                        } else {
+                            guardarEliminacionRelacion(seleccionFila[0].get('param_relId'), seleccionFila[0].get('param_perIdRelacionador'));
+                        }
+                    }
+                }
             }
         ],
         bbar: new Ext.PagingToolbar({

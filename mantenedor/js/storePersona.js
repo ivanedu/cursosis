@@ -5,7 +5,7 @@ var personaStorePersona = new Ext.data.Store({
         url: 'controlador/controladorPersona.php',
         method: 'POST'
     }), baseParams: {
-        opcion: 'listar',
+        opcion: 'listarpagina',
         start: 0,
         limit: 10
     },

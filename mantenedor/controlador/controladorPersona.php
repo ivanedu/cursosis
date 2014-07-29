@@ -6,6 +6,7 @@ $param = array();
 $param['opcion']='';
 $param['inicio']=0;
 $param['final']=10;
+$param['consulta']='';
 $param['perId']=0;
 $param['perNombre']='';
 $param['perApePaterno']='';
@@ -19,6 +20,8 @@ if (isset($_POST['start']))
     $param['inicio'] = $_POST['start'];
 if (isset($_POST['limit']))
     $param['final'] = $_POST['limit'];
+if (isset($_POST['query']))
+    $param['consulta'] = $_POST['query'];
 if (isset($_POST['perId']))
     $param['perId'] = $_POST['perId'];
 if (isset($_POST['perNombre']))

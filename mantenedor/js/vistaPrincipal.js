@@ -79,6 +79,21 @@ Ext.onReady(function() {
                     items: panelTipoRelacion,
                     listeners: {
                         close: function() {
+                            tiporelacionStoreTipoRelacion.setBaseParam('query', '');
+                        }
+                    }
+                });
+            }
+            if ((node.id) == '4') {
+                var panelRelacion = getVistaRelacion();
+                tab = new Ext.Panel({
+                    id: 'relacion-panel',
+                    title: 'Mantenedor Relacion',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelRelacion,
+                    listeners: {
+                        close: function() {
                             //cronogramaunido_storeCronogramaUnido.setBaseParam('query', '');
                         }
                     }
