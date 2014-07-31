@@ -25,4 +25,6 @@
     {
         echo 'hola3';
     }
+    
+    echo 'plopMGBG22';
 ?>
