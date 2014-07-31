@@ -13,5 +13,6 @@
     {
         echo 'hola';
     }
+    echo 'plop8';
     echo 'plop9';
 ?>
