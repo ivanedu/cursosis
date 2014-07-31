@@ -1,4 +1,4 @@
 <?php
-    echo 'prueva con archivos';
+    echo 'prueba con archivos';
 
 ?>
