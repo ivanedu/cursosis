@@ -16,6 +16,7 @@
     echo 'plop8';
     echo 'plop9';
     
+    echo 'plopMGBG';
     function get2()
     {
         echo 'hola2';
