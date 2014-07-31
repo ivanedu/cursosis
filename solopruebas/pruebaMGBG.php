@@ -9,6 +9,10 @@
     {
         echo "jajajaja";
     }
+    function plop()
+    {
+        echo "plop ";
+    }
     echo 'Probando desde PC';
      function modificandoAlMismoTiempo()
     {
