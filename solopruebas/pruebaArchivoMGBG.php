@@ -15,4 +15,6 @@
     }
     echo 'plop8';
     echo 'plop9';
+    
+    echo 'plopMGBG';
 ?>
