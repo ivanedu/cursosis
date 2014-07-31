@@ -1,7 +1,8 @@
 <?php
+    //
     function modificando()
     {
-        echo "Hola";
+        echo "Hola MIluska modificando";
     }
     echo 'Probando desde PC';
 ?>
