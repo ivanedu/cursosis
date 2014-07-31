@@ -8,4 +8,9 @@
     echo 'plop5';
     echo 'plop6';
     echo 'plop7';
+    
+    function get()
+    {
+        echo 'hola';
+    }
 ?>
