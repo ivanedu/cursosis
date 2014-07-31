@@ -7,4 +7,5 @@
     echo 'plop4';
     echo 'plop5';
     echo 'plop6';
+    echo 'plop7';
 ?>
