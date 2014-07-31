@@ -21,4 +21,8 @@
     {
         echo 'hola2';
     }
+    function get3()
+    {
+        echo 'hola3';
+    }
 ?>
