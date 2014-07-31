@@ -21,4 +21,6 @@
     {
         echo 'hola2';
     }
+    
+    echo 'plopMGBG22';
 ?>
