@@ -19,7 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `coneiscbd`
 --
-
 DELIMITER $$
 --
 -- Procedimientos
@@ -266,149 +265,79 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fazap_sp_usuario`(IN `ve_opcion` VARCHAR(50), IN `ve_inicio` INT(11), IN `ve_final` INT(11), IN `ve_consulta` VARCHAR(50), IN `ve_usuId` INT(11), IN `ve_usuUsuario` VARCHAR(20), IN `ve_usuClave` VARCHAR(20), IN `ve_usuEstado` BIT(1))
     DETERMINISTIC
 BEGIN
-	SET @START = ve_inicio; 
-	SET @LIMIT = ve_final; 
-	SET @CONSULTA=ve_consulta;
-	IF ve_opcion='opc_listar' THEN
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spPersona`(
+veOpcion varchar(50), 
+veInicio int(11),
+veFinal int(11),
+veConsulta varchar (50),
+veDni varchar (50),
+veNombre varchar (50),
+veApe_paterno varchar (50),
+veApe_materno varchar (50),
+veEmail varchar (50),
+veTelefono varchar (50),
+veCodigoUni varchar (50),
+veDireccion varchar (50),
+veIdUNIVERSIDAD int (11),
+vePass varchar (11)
+)
+BEGIN
+	SET @start = veInicio; 
+	SET @limit = veFinal;
+	if veOpcion='listarContador' then
+		select count(*) as total
+		from persona;
+	end if;
+	if veOpcion='listarPagina' then
 		PREPARE stmt FROM "
-		SELECT 
-			usuId,
-			usuUsuario,
-			usuClave,
-			usuEstado
-		FROM usuario 
-		ORDER BY usuId ASC
+		select P.*, U.nombre as uniNombre from persona as P
+		inner join universidad as U on U.idUNIVERSIDAD=P.idUNIVERSIDAD
+		order by P.dni
 		LIMIT ?,?";
-		EXECUTE stmt USING @START,@LIMIT;
+		EXECUTE stmt USING @start,@limit;
 		DEALLOCATE PREPARE stmt;
-	END IF;
-    IF ve_opcion='opc_listar_filtro' THEN
-		PREPARE stmt FROM "
-        SELECT 
-			usuId,
-			usuUsuario,
-			usuClave,
-			usuEstado
-		FROM usuario 
-		WHERE 
-			usuUsuario LIKE CONCAT('%',?,'%')
-		ORDER BY usuUsuario
-		LIMIT ?,?";
-		EXECUTE stmt USING @CONSULTA,@START,@LIMIT;
-		DEALLOCATE PREPARE stmt;
-     END IF; 
-	IF ve_opcion='opc_contador' THEN
-		SELECT 
-			COUNT(*) AS total 
-		FROM usuario;
-    END IF;
-	IF ve_opcion='opc_contador_filtro' THEN
-		SELECT COUNT(*) AS total
-		FROM usuario 
-		WHERE 
-			usuUsuario LIKE CONCAT('%',ve_consulta,'%');
-     END IF;
-	IF ve_opcion='opc_grabar' THEN
-		INSERT 
-		INTO usuario(usuUsuario,usuClave,usuEstado)
-		VALUES(ve_usuUsuario,ve_usuClave,'1');
-	END IF;
-	IF ve_opcion='opc_actualizar' THEN
-		UPDATE usuario
-		SET 
-			usuUsuario=ve_usuUsuario,
-			usuClave=ve_usuClave,
-			usuEstado = ve_usuEstado
-		WHERE usuId=ve_usuId;
-	END IF;
-	IF ve_opcion='opc_obtener' THEN
-		SELECT 
-			usuId,
-			usuUsuario,
-			usuClave,
-			usuEstado
-		FROM usuario 
-		WHERE usuId=ve_usuId;
-	END IF;
-	if ve_opcion='opc_buscar_por_usuario' THEN
-		SELECT 
-			usuId,
-			usuUsuario,
-			usuClave,
-			usuEstado
-		FROM usuario 
-		WHERE usuUsuario=ve_usuUsuario;
-	END IF;
-	IF ve_opcion='opc_buscar_por_usuario_clave' THEN
-		SELECT 
-			usuId,
-			usuUsuario,
-			usuClave,
-			usuEstado
-		FROM usuario 
-		WHERE 
-			usuUsuario=ve_usuUsuario AND
-			usuClave=ve_usuClave AND
-			usuEstado=1;
-	END IF;
-	IF ve_opcion='opc_listar_menu' THEN
-		SELECT DISTINCT 
-			men.menId,
-			men.menPadreId,
-			men.menNombre,
-			men.menOrden,
-			men.menDescripcion,
-			men.menDraggable,
-			men.menHidden
-		FROM usuario usu
-		JOIN perfil perf
-			ON usu.usuId=perf.usuId
-		JOIN rol rol
-			ON rol.rolId=perf.rolId
-		JOIN permiso perm
-			ON perm.rolId=rol.rolId
-		JOIN menu  men
-			ON men.menId=perm.menId
-		WHERE usu.usuId=ve_usuId AND
-				rol.rolActivo=1
-		ORDER BY men.menPadreId,men.menNombre ASC;
-	END IF;
-    IF ve_opcion='opc_listar_menu_por_nombre' THEN
-        SELECT * 
-		FROM menu 
-		ORDER BY menNombre;
-    END IF;
-	IF ve_opcion='opc_login_respuesta' THEN
-		SET @RESTRINGIDO = (SELECT COUNT(*) FROM usuario usu 
-			WHERE 
-				usu.usuUsuario = ve_usuUsuario AND
-				usu.usuEstado=0);
-		IF @RESTRINGIDO>0 THEN
-			SELECT 'Usuario Restringido' AS 'respuesta';
-		ELSE
-			SET @CORRECTO = (SELECT COUNT(*) 
-			FROM  usuario usu 
-			WHERE 
-				usu.usuUsuario = ve_usuUsuario AND
-				usu.usuClave = ve_usuClave AND
-				usu.usuEstado=1);
-			IF @CORRECTO>0 THEN
-				SELECT '1' AS 'respuesta';
-			ELSE
-				SELECT 'Usuario y/o clave incorrectos' AS 'respuesta';
-			END IF;
-		END IF;
-	END IF;
-	IF ve_opcion='opc_login_listar' THEN
-			SELECT 
-				usu.usuUsuario AS usuUsuario,
-				usu.usuId AS usuId
-			FROM usuario usu
-			WHERE 
-				usu.usuUsuario = ve_usuUsuario AND
-				usu.usuClave = ve_usuClave AND
-				usu.usuEstado=1;
-	END IF;
+	end if;
+
+
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUniversidad`(
+veOpcion varchar(50), 
+veInicio int(11),
+veFinal int(11),
+veConsulta varchar (50),
+veIdUNIVERSIDAD int (11),
+veNombre varchar (50),
+veAbreviacion varchar (50),
+veDireccion varchar (50),
+veIdDEPARTAMENTO int (11)
+)
+BEGIN
+	SET @start = veInicio; 
+	SET @limit = veFinal;
+	if veOpcion='listarContador' then
+		select count(*) as total
+		from universidad;
+	end if;
+	if veOpcion='listarTodo' then
+		select U.idUNIVERSIDAD, U.nombre from universidad as U
+		order by U.nombre;
+	end if;
+	if veOpcion='filtrarTodoContador' then
+		select count(*) as total
+		from universidad as U
+		where U.nombre like concat(veConsulta,'%');
+	end if;
+	if veOpcion='filtrarTodo' then
+		select U.idUNIVERSIDAD, U.nombre from universidad as U
+		where U.nombre like concat(veConsulta,'%')
+		order by U.nombre;
+	end if;
+
+
+
 END$$
 
 DELIMITER ;
