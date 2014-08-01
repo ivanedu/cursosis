@@ -30,4 +30,5 @@
     echo 'pruebaMGBG23';
     echo 'pruebaMGBG24';
     echo 'desdeWeb';
+    echo 'desdePC';
 ?>
