@@ -15,6 +15,11 @@
 <script type="text/javascript" src="js/controlusuario/usuario.js"></script>
 
 <!--Aqui Inicia scripts de Stores-->
+
+<!--Aqui termina scripts de Stores-->
+<!--Aqui Inicia scripts de Vistas-->
+
+<script type="text/javascript" src="js/vistaPagoCongreso.js"></script>
 <script type="text/javascript" src="js/mantenedor/storePersona.js"></script>
 
 <!--Aqui termina scripts de Stores-->
