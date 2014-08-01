@@ -42,5 +42,10 @@
     echo 'xd xd xd';
     echo 'holaMGBG';
     
-    echo 'porEnesimaVEz XD';
+    echo 'enesimaVezPCCCC';
+    
+    echo 'ahiLeVamosCOnFe';
+    
+    echo 'la';
+    echo 'nouseasla7.4XD';
 ?>
