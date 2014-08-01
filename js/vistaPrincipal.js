@@ -39,7 +39,8 @@ Ext.onReady(function() {
         var tab = tabs.findById(node.id); // step 1
         if (!tab) {
             if (node.id == '1'||
-                node.id == '5') {
+                node.id == '5'||
+                node.id == '6') {
                 if (nodeExpand == '') {
                     node.expand(true);
                     nodeExpand = node.id;
@@ -83,6 +84,16 @@ Ext.onReady(function() {
                     closable: true,
                     layout: 'fit',
                     items: panelUsuario
+                });
+            }
+            if ((node.id) == '8') {
+                var panelPagoCongreso = getVistaPagoCongreso();
+                tab = new Ext.Panel({
+                    id: 'pagocongreso-panel',
+                    title: 'Pago congreso',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelPagoCongreso
                 });
             }
             if (tabs != null) {
