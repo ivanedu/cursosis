@@ -39,7 +39,7 @@ Ext.onReady(function() {
         var tab = tabs.findById(node.id); // step 1
         if (!tab) {
             if (node.id == '1'||
-                node.id == '5') {
+                node.id == '5'||node.id == '6') {
                 if (nodeExpand == '') {
                     node.expand(true);
                     nodeExpand = node.id;
@@ -83,6 +83,17 @@ Ext.onReady(function() {
                     closable: true,
                     layout: 'fit',
                     items: panelUsuario
+                });
+            }
+            if ((node.id) == '12') {
+                var panelPersona = getVistaPersona();
+                tab = new Ext.Panel({
+                    id: 'persona-panel',
+                    title: 'Persona',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelPersona,
+                    
                 });
             }
             if (tabs != null) {

@@ -1,6 +1,6 @@
 <?php
 
-include_once 'modeloConexion.php';
+include_once '../../modelo/modeloConexion.php';
 
 class ModeloUniversidad {
     

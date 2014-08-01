@@ -14,7 +14,7 @@ class ModeloConexion {
         $this->consultaSql = "";
     }
 
-    public function abrirConexion($servidor = "localhost", $usuario = "root", $clave = "", $basedatos = "coneisbd") {
+    public function abrirConexion($servidor = "localhost", $usuario = "root", $clave = "", $basedatos = "coneiscbd") {
         $this->conexion = @mysql_connect($servidor, $usuario, $clave) or die("<span style='color:rgb(255,0,0);'>ERROR</span> : ModeloConexion->abrirConexion[mysql_connect : " . mysql_error() . "]</br>");
         @mysql_select_db($basedatos, $this->conexion)or die("<span style='color:rgb(255,0,0);'>ERROR</span> : ModeloConexion->abrirConexion[mysql_mysql_db : " . mysql_error() . "]</br>");
     }

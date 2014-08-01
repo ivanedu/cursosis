@@ -4,7 +4,7 @@ var personaMascaraUniveridadRender;
 
 var personaStorePersona = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorPersona.php',
+        url: 'controlador/controladorMantenedor/controladorPersona.php',
         method: 'POST'
     }), baseParams: {
         opcion: 'listarpagina',
@@ -61,7 +61,7 @@ var personaStorePersona = new Ext.data.Store({
 
 var personaStoreUniversidad = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorUniversidad.php',
+        url: 'controlador/controladorMantenedor/controladorUniversidad.php',
         method: 'POST'
     }), baseParams: {
         opcion: 'listarTodo',
@@ -86,7 +86,7 @@ var personaStoreUniversidad = new Ext.data.Store({
 
 var personaStoreUniversidadRender = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorUniversidad.php',
+        url: 'controlador/controladorMantenedor/controladorUniversidad.php',
         method: 'POST'
     }), baseParams: {
         opcion: 'listarTodo'
