@@ -5,6 +5,10 @@
     Description:
         Purpose of the stylesheet follows.
 */
+.classDisabled{
+    background-color:blue;
+    border: 2px solid blue;
+}
 #header {
     background: #7F99BE url(../img/layout.gif) repeat-x center;
 }
