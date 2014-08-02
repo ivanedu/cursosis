@@ -96,6 +96,17 @@ Ext.onReady(function() {
                     items: panelPagoCongreso
                 });
             }
+            if ((node.id) == '12') {
+                var panelPersona = getVistaPersona();
+                tab = new Ext.Panel({
+                    id: 'persona-panel',
+                    title: 'Persona',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelPersona,
+                    
+                });
+            }
             if (tabs != null) {
                 tabs.add(tab);
                 tabs.doLayout();
