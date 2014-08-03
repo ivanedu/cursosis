@@ -1,10 +1,11 @@
-var personaMascaraPersona;
-var personaMascaraUniversidad;
-var personaMascaraUniveridadRender;
+var inscripcionMascaraInscripcion;
+var inscripcionMascaraUniversidad;
+var inscripcionMascaraUniveridadRender;
+var inscripcionMascaraDepartamento;
 
-var personaStorePersona = new Ext.data.Store({
+var inscripcionStoreInscripcion = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorMantenedor/controladorPersona.php',
+        url: 'controlador/controladorinscripcion.php',
         method: 'POST'
     }), baseParams: {
         opcion: 'listarpagina',
@@ -59,9 +60,9 @@ var personaStorePersona = new Ext.data.Store({
     })
 });
 
-var personaStoreUniversidad = new Ext.data.Store({
+var inscripcionStoreUniversidad = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorMantenedor/controladorUniversidad.php',
+        url: 'controlador/controladorUniversidad.php',
         method: 'POST'
     }), baseParams: {
         opcion: 'listarTodo',
@@ -84,9 +85,9 @@ var personaStoreUniversidad = new Ext.data.Store({
     })
 });
 
-var personaStoreUniversidadRender = new Ext.data.Store({
+var inscripcionStoreUniversidadRender = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorMantenedor/controladorUniversidad.php',
+        url: 'controlador/controladorUniversidad.php',
         method: 'POST'
     }), baseParams: {
         opcion: 'listarTodo'
@@ -107,34 +108,66 @@ var personaStoreUniversidadRender = new Ext.data.Store({
     })
 });
 
-
-var personaEnlaceInicial=true;
-personaStoreUniversidad.on('beforeload', function(my, e) {
-    personaMascaraUniversidad.show();
-});
-personaStoreUniversidad.on('load', function(my, e) {
-    personaMascaraUniversidad.hide();
-    if(personaEnlaceInicial)personaStoreUniversidadRender.load();
-});
-
-personaStoreUniversidadRender.on('beforeload', function(my, e) {
-    personaMascaraUniveridadRender.show();
-});
-personaStoreUniversidadRender.on('load', function(my, e) {
-    personaMascaraUniveridadRender.hide();
-    if(personaEnlaceInicial)personaStorePersona.load();
-});
-
-
-personaStorePersona.on('beforeload', function(my, e) {
-    personaMascaraPersona.show();
-});
-personaStorePersona.on('load', function(my, e) {
-    personaMascaraPersona.hide();
-    if(personaEnlaceInicial)personaEnlaceInicial=false;
+var inscripcionStoreDepartamento = new Ext.data.Store({
+    proxy: new Ext.data.HttpProxy({
+        url: 'controlador/controladorDepartamento.php',
+        method: 'POST'
+    }), baseParams: {
+        opcion: 'listarTodo',
+        start: 0,
+        limit: 10
+    },
+    reader: new Ext.data.JsonReader({
+        root: 'datos',
+        totalProperty: 'total',
+        id: 'dni',
+        fields: [{
+                name: 'param_idDEPARTAMENTO',
+                type: 'string',
+                mapping: 'idDEPARTAMENTO'
+            }, {
+                name: 'param_nombre',
+                type: 'string',
+                mapping: 'nombre'
+            }]
+    })
 });
 
-function personaCargadoInicial(){
-    personaEnlaceInicial=true;
-    personaStoreUniversidad.load();
+var inscripcionEnlaceInicial=true;
+inscripcionStoreDepartamento.on('beforeload', function(my, e) {
+    inscripcionMascaraDepartamento.show();
+});
+inscripcionStoreDepartamento.on('load', function(my, e) {
+    inscripcionMascaraDepartamento.hide();
+    if(inscripcionEnlaceInicial)inscripcionStoreUniversidadRender.load();
+});
+inscripcionStoreUniversidad.on('beforeload', function(my, e) {
+    inscripcionMascaraUniversidad.show();
+});
+inscripcionStoreUniversidad.on('load', function(my, e) {
+    inscripcionMascaraUniversidad.hide();
+    if(inscripcionEnlaceInicial)inscripcionStoreUniversidadRender.load();
+});
+
+inscripcionStoreUniversidadRender.on('beforeload', function(my, e) {
+    inscripcionMascaraUniveridadRender.show();
+});
+inscripcionStoreUniversidadRender.on('load', function(my, e) {
+    inscripcionMascaraUniveridadRender.hide();
+    if(inscripcionEnlaceInicial)inscripcionStoreInscripcion.load();
+});
+
+
+inscripcionStoreInscripcion.on('beforeload', function(my, e) {
+    inscripcionMascaraInscripcion.show();
+});
+inscripcionStoreInscripcion.on('load', function(my, e) {
+    inscripcionMascaraInscripcion.hide();
+    if(inscripcionEnlaceInicial)inscripcionEnlaceInicial=false;
+});
+
+function inscripcionCargadoInicial(){
+    inscripcionEnlaceInicial=true;
+    inscripcionStoreUniversidad.load();
+    inscripcionStoreDepartamento.load();
 }

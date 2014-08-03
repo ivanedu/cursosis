@@ -1,6 +1,6 @@
 <?php
 
-include_once '../../modelo/modeloConexion.php';
+include_once 'modeloConexion.php';
 
 class ModeloPersona {
     
@@ -60,7 +60,7 @@ class ModeloPersona {
             $this->ejecutarProcedimientoAlmacenado('listarPagina');
             $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
                 'ape_paterno','ape_materno','email','telefono','codigoUni',
-                'direccion','idUNIVERSIDAD','pass'));
+                'direccion','idUNIVERSIDAD'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }

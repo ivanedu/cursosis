@@ -15,16 +15,15 @@
 <script type="text/javascript" src="js/controlusuario/usuario.js"></script>
 
 <!--Aqui Inicia scripts de Stores-->
+<script type="text/javascript" src="js/storePersona.js"></script>
+<script type="text/javascript" src="js/storeInscripcion.js"></script>
 
 <!--Aqui termina scripts de Stores-->
 <!--Aqui Inicia scripts de Vistas-->
 
 <script type="text/javascript" src="js/vistaPagoCongreso.js"></script>
-<script type="text/javascript" src="js/mantenedor/storePersona.js"></script>
-
-<!--Aqui termina scripts de Stores-->
-<!--Aqui Inicia scripts de Vistas-->
-<script type="text/javascript" src="js/mantenedor/vistaPersona.js"></script>
+<script type="text/javascript" src="js/vistaInscripcion.js"></script>
+<script type="text/javascript" src="js/vistaPersona.js"></script>
 
 <!--Aqui termina scripts de Vistas-->
 

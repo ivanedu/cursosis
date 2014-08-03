@@ -1,8 +1,8 @@
 <?php
 
-include_once '../../modelo/modeloConexion.php';
+include_once 'modeloConexion.php';
 
-class ModeloUniversidad {
+class ModeloDepartamento {
     
     private $param = array();
     private $modeloConexion = null;
@@ -18,16 +18,14 @@ class ModeloUniversidad {
         /*
          *
          */
-        $modeloConexion->prepararConsulta("CALL spUniversidad(?,?,?,?,?,?,?,?,?)");
+        $modeloConexion->prepararConsulta("CALL spDepartamento(?,?,?,?,?,?,?)");
         $modeloConexion->enlazarParametrosConsulta(array('string',$opcion));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['inicio']));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['final']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['consulta']));
-        $modeloConexion->enlazarParametrosConsulta(array('number',$param['idUNIVERSIDAD']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['nombre']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['abreviacion']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['direccion']));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['idDEPARTAMENTO']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['nombre']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['pais']));
         $modeloConexion->ejecutarConsulta();
     }
 
@@ -57,7 +55,7 @@ class ModeloUniversidad {
         if ($total > 0) {
             $this->modeloConexion->cerrarabrirConexion();
             $this->ejecutarProcedimientoAlmacenado('listarTodo');
-            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idUNIVERSIDAD','nombre'));
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idDEPARTAMENTO','nombre'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }
@@ -68,7 +66,7 @@ class ModeloUniversidad {
         if ($total > 0) {
             $this->modeloConexion->cerrarabrirConexion();
             $this->ejecutarProcedimientoAlmacenado('filtrarTodo');
-            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idUNIVERSIDAD','nombre'));
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idDEPARTAMENTO','nombre'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }

@@ -1,5 +1,5 @@
 <?php
-include_once '../../modelo/mantenedor/modeloPersona.php';
+include_once '../modelo/modeloPersona.php';
 
 $param = array();
 

@@ -8,7 +8,6 @@ function getVistaPersona() {
     personaMascaraUniversidad = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Universidad : Store PersonaUniversidad..."});
     personaMascaraUniveridadRender = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando UniversidadRender : Store PersonaUniversidadRender..."});
 
-
     personaCargadoInicial();
 
     var gridPersona = new Ext.grid.GridPanel({

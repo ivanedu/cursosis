@@ -107,6 +107,17 @@ Ext.onReady(function() {
                     
                 });
             }
+            if ((node.id) == '7') {
+                var Ins_panelInscripcion = getVistaInscripcion();
+                tab = new Ext.Panel({
+                    id: 'inscripcion-panel',
+                    title: 'Inscripcion',
+                    closable: true,
+                    layout: 'fit',
+                    items: Ins_panelInscripcion,
+                    
+                });
+            }
             if (tabs != null) {
                 tabs.add(tab);
                 tabs.doLayout();
