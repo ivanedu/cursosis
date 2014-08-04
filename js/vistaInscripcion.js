@@ -1,11 +1,13 @@
 function getVistaInscripcion() {
+    var ventanaPopupBuscarInscripcion;
 
     inscripcionMascaraInscripcion = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Inscripcion : Store Inscripcion..."});
     inscripcionMascaraUniversidad = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Universidad : Store InscripcionUniversidad..."});
     inscripcionMascaraUniveridadRender = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando UniversidadRender : Store InscripcionUniversidadRender..."});
     inscripcionMascaraDepartamento = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Departamento : Store InscripcionDepartamento..."});
+    inscripcionMascaraPersona = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Persona : Store InscripcionPersona..."});
     inscripcionCargadoInicial();
-    
+
     var ins_dni = new Ext.form.NumberField({
         fieldLabel: '<span>Dni</span><span style="color:red;font-weight:bold">*</span>',
         id: 'ins_dni',
@@ -38,6 +40,10 @@ function getVistaInscripcion() {
                     //
                 }
             }
+        },
+        handler: function() {
+            abrirFormularioBuscarInscripcion();
+            ventanaPopupBuscarInscripcion.show();
         }
     });
     var ins_btnIncorrecto = new Ext.Button({
@@ -131,10 +137,10 @@ function getVistaInscripcion() {
         }
     });
     var ins_email = new Ext.form.TextField({
-        fieldLabel: '<span>Email</span><span style="color:red;font-weight:bold">*</span>',
+        fieldLabel: '<span>Email</span><span style="color:red;font-weight:bold"></span>',
         id: 'ins_email',
         width: '150',
-        allowBlank: false,
+        //allowBlank: false,
         enableKeyEvents: true,
         maxLength: 30,
         minLength: 0,
@@ -156,10 +162,10 @@ function getVistaInscripcion() {
         }
     });
     var ins_telefono = new Ext.form.TextField({
-        fieldLabel: '<span>Telefono</span><span style="color:red;font-weight:bold">*</span>',
+        fieldLabel: '<span>Telefono</span><span style="color:red;font-weight:bold"></span>',
         id: 'ins_telefono',
         width: '150',
-        allowBlank: false,
+        //allowBlank: false,
         enableKeyEvents: true,
         maxLength: 30,
         minLength: 0,
@@ -184,6 +190,7 @@ function getVistaInscripcion() {
         boxLabel: 'Estudiante',
         width: 150,
         name: 'tipo',
+        checked: true,
         inputValue: 0
     });
     var ins_tipo_profesional = new Ext.form.Radio({
@@ -199,7 +206,18 @@ function getVistaInscripcion() {
         items: [
             ins_tipo_estudiante,
             ins_tipo_profesional
-        ]
+        ],
+        listeners: {
+            change: function(objeto, checked) {
+                if (checked.getGroupValue() == 0) {
+                    ins_direccion.setDisabled(true);
+                    ins_codigoUni.setDisabled(false);
+                } else {
+                    ins_direccion.setDisabled(false);
+                    ins_codigoUni.setDisabled(true);
+                }
+            }
+        }
     });
     var ins_codigoUni = new Ext.form.NumberField({
         fieldLabel: '<span>Codigo Universitario</span><span style="color:red;font-weight:bold">*</span>',
@@ -243,20 +261,282 @@ function getVistaInscripcion() {
         id: 'ins_idDepartamento',
         fieldLabel: '<span>Departamento</span><span style="color:red;font-weight:bold">*</span>',
         store: inscripcionStoreDepartamento,
-        valueField: 'param_idUNIVERSIDAD',
+        valueField: 'param_idDEPARTAMENTO',
         displayField: 'param_nombre',
         emptyText: 'Seleccione...',
         forceSelection: true,
         autoScroll: true,
         allowBlank: false,
+        disabled: true,
         triggerAction: 'all',
         width: 160,
         maxHeight: 100,
         minChars: 1,
         tpl: ins_tpl_idDepartamento,
-        itemSelector: 'div.search-item'
+        itemSelector: 'div.search-item',
+        listeners: {
+            select: function(combo, record, index) {
+                ins_idUniversidad.clearValue();
+                inscripcionStoreUniversidad.setBaseParam('idDEPARTAMENTO', record.get('param_idDEPARTAMENTO'));
+                inscripcionStoreUniversidad.load();
+            }
+        }
     });
+    var ins_direccion = new Ext.form.TextField({
+        fieldLabel: '<span>Direccion</span><span style="color:red;font-weight:bold">*</span>',
+        id: 'ins_direccion',
+        width: '150',
+        allowBlank: false,
+        disabled: true,
+        enableKeyEvents: true,
+        maxLength: 50,
+        minLength: 0,
+        maxLengthText: 'Max 50 caracteres',
+        minLengthText: 'min 0 caracteres',
+        listeners: {
+            keypress: function(my, evt) {
+                if (evt.getKey() == evt.ENTER)
+                {
+                    guardarRegistroPersona();
+                } else {
+                    var ascii = evt.getKey();
+                    if (!((ascii >= 65 && ascii <= 90) || (ascii >= 48 && ascii <= 57) || (ascii >= 45 && ascii <= 46) || (ascii == 95) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                    {
+                        evt.stopEvent();
+                    }
+                }
+            }
+        }
+    });
+    function abrirFormularioBuscarInscripcion() {
+        var ins_nombre2 = new Ext.form.TextField({
+            fieldLabel: '<span>Nombre</span><span style="color:red;font-weight:bold">*</span>',
+            id: 'ins_nombre2',
+            width: '150',
+            allowBlank: false,
+            enableKeyEvents: true,
+            maxLength: 30,
+            minLength: 3,
+            maxLengthText: 'Max 30 caracteres',
+            minLengthText: 'min 3 caracteres',
+            listeners: {
+                keypress: function(my, evt) {
+                    if (evt.getKey() == evt.ENTER)
+                    {
+                        guardarRegistroPersona();
+                    } else {
+                        var ascii = evt.getKey();
+                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        {
+                            evt.stopEvent();
+                        }
+                    }
+                }
+            }
+        });
+        var ins_ape_paterno2 = new Ext.form.TextField({
+            fieldLabel: '<span>Apellido Paterno</span><span style="color:red;font-weight:bold">*</span>',
+            id: 'ins_ape_paterno2',
+            width: '150',
+            allowBlank: false,
+            enableKeyEvents: true,
+            maxLength: 30,
+            minLength: 3,
+            maxLengthText: 'Max 30 caracteres',
+            minLengthText: 'min 3 caracteres',
+            listeners: {
+                keypress: function(my, evt) {
+                    if (evt.getKey() == evt.ENTER)
+                    {
+                        guardarRegistroPersona();
+                    } else {
+                        var ascii = evt.getKey();
+                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        {
+                            evt.stopEvent();
+                        }
+                    }
+                }
+            }
+        });
+        var ins_ape_materno2 = new Ext.form.TextField({
+            fieldLabel: '<span>Apellido Materno</span><span style="color:red;font-weight:bold">*</span>',
+            id: 'ins_ape_materno2',
+            width: '150',
+            allowBlank: false,
+            enableKeyEvents: true,
+            maxLength: 30,
+            minLength: 3,
+            maxLengthText: 'Max 30 caracteres',
+            minLengthText: 'min 3 caracteres',
+            listeners: {
+                keypress: function(my, evt) {
+                    if (evt.getKey() == evt.ENTER)
+                    {
+                        guardarRegistroPersona();
+                    } else {
+                        var ascii = evt.getKey();
+                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        {
+                            evt.stopEvent();
+                        }
+                    }
+                }
+            }
+        });
+        var gridPersona = new Ext.grid.GridPanel({
+            title: 'Persona',
+            region: 'south',
+            store: inscripcionStorePersona,
+            border: false,
+            stripeRows: true,
+            itemSelector: true,
+            height: 200,
+            tbar: [
+            ],
+            bbar: new Ext.PagingToolbar({
+                store: inscripcionStorePersona,
+                displayInfo: true,
+                autoWidth: true,
+                beforePageText: 'Página',
+                afterPageText: 'de {0}',
+                displayMsg: '{0} - {1} de {2} Personas',
+                emptyMsg: 'No hay Personas para mostrar',
+                pageSize: 10
+            }),
+            columns:
+                    [new Ext.grid.RowNumberer(),
+                        {
+                            header: 'DNI',
+                            dataIndex: 'param_dni',
+                            sortable: true,
+                            width: 60
+                        }, {
+                            header: 'Nombre',
+                            dataIndex: 'param_nombre',
+                            sortable: true,
+                            width: 150
+                        }, {
+                            header: 'Apellido Paterno',
+                            dataIndex: 'param_ape_paterno',
+                            sortable: true,
+                            width: 100
+                        }, {
+                            header: 'Apellido Materno',
+                            dataIndex: 'param_ape_materno',
+                            sortable: true,
+                            width: 100
+                        }, {
+                            header: 'Universidad',
+                            dataIndex: 'param_idUNIVERSIDAD',
+                            sortable: true,
+                            //hidden:true,
+                            width: 200,
+                             renderer: function(val) {
+                             var records = inscripcionStoreUniversidadRender.getRange();
+                             var valor = '';
+                             for (var i = 0; i < records.length; i++) {
+                             if (records[i].get('param_idUNIVERSIDAD') == val) {
+                             valor = records[i].get('param_nombre');
+                             break;
+                             }
+                             }
+                             return valor;
+                             }
+                        }],
+            selModel: new Ext.grid.RowSelectionModel({singleSelect: true})
+        });
+        var formularioBuscarInscripcion = new Ext.form.FormPanel({
+            border: false,
+            region: 'center',
+            padding: '10px 10px 10px 10px',
+            labelAlign: 'top',
+            items: [
+                {
+                    border: false,
+                    layout: 'column',
+                    padding: '5px 0px 10px 5px',
+                    items: [
+                        {
+                            border: false,
+                            width: 250,
+                            layout: 'form',
+                            labelWidth: 110,
+                            items: [ins_ape_paterno2]
+                        }, {
+                            border: false,
+                            width: 250,
+                            layout: 'form',
+                            labelWidth: 110,
+                            items: [ins_ape_materno2]
+                        }
+                    ]
+                }, {
+                    border: false,
+                    layout: 'column',
+                    padding: '5px 0px 20px 5px',
+                    items: [
+                        {
+                            border: false,
+                            width: 300,
+                            layout: 'form',
+                            labelWidth: 110,
+                            items: [ins_nombre2]
+                        }
+                    ]
+                }
+            ],
+            buttonAlign: 'center',
+            buttons: [{
+                    text: 'Buscar',
+                    iconCls: 'search',
+                    width: 100,
+                    handler: function() {
+                    }
+                }, {
+                    text: 'Cancelar',
+                    iconCls: 'close',
+                    width: 100,
+                    handler: function() {
+                        //aqui
+                        ventanaPopupBuscarInscripcion.close();
+                    }
+                }
 
+            ]
+        });
+        /*var panelBuscarInscripcion = new Ext.Panel({
+         labelAlign: 'top',
+         border: false,
+         items: panel
+         });*/
+        var panelBuscarInscripcion = new Ext.Panel({
+            labelAlign: 'top',
+            //border: false,
+            bodyStyle: 'padding: 10px;',
+            widthLabel: 100,
+            width: 700,
+            height: 400,
+            title: 'Panek',
+            layout: 'border',
+            /*defaults: {
+             split: true
+             },*/
+            items: [
+                formularioBuscarInscripcion, gridPersona
+            ]
+        });
+        ventanaPopupBuscarInscripcion = new Ext.Window({
+            title: 'Buscar Inscripcion',
+            closable: false,
+            modal: true,
+            width: 700,
+            constrain: true,
+            resizable: false,
+            items: [panelBuscarInscripcion]
+        });
+
+    }
     var formularioVistaInscripcion = new Ext.form.FormPanel({
         title: 'Formulario Registro Inscripcion',
         padding: '10px 10px 10px 10px',
@@ -368,12 +648,12 @@ function getVistaInscripcion() {
                 padding: '5px 0px 20px 5px',
                 items: [
                     {
-                        border:false,
+                        border: false,
                         width: 300,
                         layout: 'form',
                         labelWidth: 110,
                         items: [ins_idDepartamento]
-                    },{
+                    }, {
                         border: false,
                         width: 300,
                         layout: 'form',
@@ -381,10 +661,29 @@ function getVistaInscripcion() {
                         items: [ins_idUniversidad]
                     }
                 ]
+            }, {
+                border: false,
+                layout: 'column',
+                padding: '5px 0px 20px 5px',
+                items: [
+                    {
+                        border: false,
+                        width: 300,
+                        layout: 'form',
+                        labelWidth: 110,
+                        items: [ins_direccion]
+                    }
+                ]
             }
         ],
         buttonAlign: 'center',
         buttons: [{
+                text: 'Nuevo',
+                iconCls: 'nuevo',
+                width: 100,
+                handler: function() {
+                }
+            }, {
                 text: 'Guardar',
                 iconCls: 'aceptar',
                 width: 100,

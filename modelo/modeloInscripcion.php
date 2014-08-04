@@ -2,7 +2,7 @@
 
 include_once 'modeloConexion.php';
 
-class ModeloUniversidad {
+class ModeloInscripcion{
     
     private $param = array();
     private $modeloConexion = null;
@@ -18,16 +18,21 @@ class ModeloUniversidad {
         /*
          *
          */
-        $modeloConexion->prepararConsulta("CALL spUniversidad(?,?,?,?,?,?,?,?,?)");
+        $modeloConexion->prepararConsulta("CALL spPersona(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $modeloConexion->enlazarParametrosConsulta(array('string',$opcion));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['inicio']));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['final']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['consulta']));
-        $modeloConexion->enlazarParametrosConsulta(array('number',$param['idUNIVERSIDAD']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['dni']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['nombre']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['abreviacion']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['ape_paterno']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['ape_materno']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['email']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['telefono']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['codigoUni']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['direccion']));
-        $modeloConexion->enlazarParametrosConsulta(array('number',$param['idDEPARTAMENTO']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['idUNIVERSIDAD']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['pass']));
         $modeloConexion->ejecutarConsulta();
     }
 
@@ -35,16 +40,8 @@ class ModeloUniversidad {
         $this->param = $param;
         $opcionCorrecta = true;
         switch ($this->param['opcion']) {
-            case "listarTodo":
-                if($this->param['idDEPARTAMENTO']==0){
-                    if($this->param['consulta']==''){
-                        $resultadoGestion = $this->listarTodo();
-                    }else{
-                        $resultadoGestion = $this->filtrarTodo();
-                    }
-                }else{
-                    $resultadoGestion = $this->filtrarPorCombo();
-                }
+            case "listarpagina":
+                $resultadoGestion = $this->listarpagina();
                 break;
             default:
                 $opcionCorrecta = false;
@@ -54,39 +51,53 @@ class ModeloUniversidad {
         if($opcionCorrecta) $this->modeloConexion->cerrarConexion();
         return $resultadoGestion;
     }
-    private function listarTodo() {
+    private function listarpagina() {
         $this->ejecutarProcedimientoAlmacenado('listarContador');
         $total = $this->modeloConexion->obtenerCampoUnico('total');
         $datos = array();
         if ($total > 0) {
             $this->modeloConexion->cerrarabrirConexion();
-            $this->ejecutarProcedimientoAlmacenado('listarTodo');
-            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idUNIVERSIDAD','nombre'));
+            $this->ejecutarProcedimientoAlmacenado('listarPagina');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
+                'ape_paterno','ape_materno','email','telefono','codigoUni',
+                'direccion','idUNIVERSIDAD'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }
-     private function filtrarTodo() {
-        $this->ejecutarProcedimientoAlmacenado('filtrarTodoContador');
+    private function listartodo() {
+        $this->ejecutarProcedimientoAlmacenado('listarcontador');
         $total = $this->modeloConexion->obtenerCampoUnico('total');
         $datos = array();
         if ($total > 0) {
             $this->modeloConexion->cerrarabrirConexion();
-            $this->ejecutarProcedimientoAlmacenado('filtrarTodo');
-            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idUNIVERSIDAD','nombre'));
+            $this->ejecutarProcedimientoAlmacenado('listartodo');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('perId','perNombreCompleto'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }
-    private function filtrarPorCombo() {
-        $this->ejecutarProcedimientoAlmacenado('filtrarPorComboContador');
+    private function filtrartodo() {
+        $this->ejecutarProcedimientoAlmacenado('filtrarcontador');
         $total = $this->modeloConexion->obtenerCampoUnico('total');
         $datos = array();
         if ($total > 0) {
             $this->modeloConexion->cerrarabrirConexion();
-            $this->ejecutarProcedimientoAlmacenado('filtrarPorCombo');
-            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idUNIVERSIDAD','nombre'));
+            $this->ejecutarProcedimientoAlmacenado('filtrartodo');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('perId','perNombreCompleto'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    private function filtrartodomenosperid() {
+        $this->ejecutarProcedimientoAlmacenado('filtrartodomenosperidcontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('filtrartodomenosperid');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('perId','perNombreCompleto'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }
 }
 
 ?>
+

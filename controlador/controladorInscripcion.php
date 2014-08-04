@@ -1,5 +1,5 @@
 <?php
-include_once '../modelo/modeloPersona.php';
+include_once '../modelo/modeloInscripcion.php';
 
 $param = array();
 
@@ -49,8 +49,8 @@ if (isset($_POST['idUNIVERSIDAD']))
 if (isset($_POST['pass']))
     $param['pass'] = $_POST['pass'];
 
-$modeloPersona=new ModeloPersona();
-echo $modeloPersona->gestionar($param);
+$modeloInscripcion=new ModeloInscripcion();
+echo $modeloInscripcion->gestionar($param);
 
 ?>
 

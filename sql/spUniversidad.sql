@@ -36,6 +36,16 @@ BEGIN
 		where U.nombre like concat(veConsulta,'%')
 		order by U.nombre;
 	end if;
+	if veOpcion='filtrarPorComboContador' then
+		select count(*) as total
+		from universidad as U
+		where U.idDEPARTAMENTO=veIdDEPARTAMENTO and U.nombre like concat(veConsulta,'%');
+	end if;
+	if veOpcion='filtrarPorCombo' then
+		select U.idUNIVERSIDAD, U.nombre from universidad as U
+		where U.idDEPARTAMENTO=veIdDEPARTAMENTO and U.nombre like concat(veConsulta,'%')
+		order by U.nombre;
+	end if;
 
 
 
