@@ -22,7 +22,7 @@ function getVistaInscripcion() {
             keypress: function(my, evt) {
                 if (evt.getKey() == evt.ENTER)
                 {
-                    //
+                    buscarPorDni();
                 }
             }
         }
@@ -267,7 +267,7 @@ function getVistaInscripcion() {
         forceSelection: true,
         autoScroll: true,
         allowBlank: false,
-        disabled: true,
+        //disabled: true,
         triggerAction: 'all',
         width: 160,
         maxHeight: 100,
@@ -536,6 +536,9 @@ function getVistaInscripcion() {
             items: [panelBuscarInscripcion]
         });
 
+    }
+    function buscarPorDni(){
+        
     }
     var formularioVistaInscripcion = new Ext.form.FormPanel({
         title: 'Formulario Registro Inscripcion',
