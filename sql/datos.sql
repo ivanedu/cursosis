@@ -61,21 +61,21 @@ INSERT INTO `universidad` (`idUNIVERSIDAD`, `nombre`, `abreviacion`, `direccion`
 
 -- --------------------------------------------------------
 
-INSERT INTO `persona` (`dni`, `nombre`, `ape_paterno`, `ape_materno`, `idUNIVERSIDAD`) VALUES
-('72892690', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892688', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892600', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892601', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892602', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892603', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892604', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892605', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892606', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892607', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892608', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892609', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892610', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892611', 'Giancarlo', 'Solano', 'Quincho', 21),
-('72892612', 'Miluska', 'Burgos', 'Gonzales',21),
-('72892613', 'Giancarlo', 'Solano', 'Quincho', 21)
+INSERT INTO `persona` (`dni`, `nombre`, `ape_paterno`, `ape_materno`, `email`, `telefono`, `codigoUni`, `direccion`, `idUNIVERSIDAD`, `tipo`) VALUES
+('72892690', 'Miluska', 'Burgos', 'Gonzales','miluskagbg@gmail.com','993249187', '1023300411','',21,0),
+('72892688', 'Giancarlo', 'Solano', 'Quincho','gsolanoq.tj@gmail.com','940220566', '1023300401','',21,0),
+('72892600', 'MAriano', 'Burgos', 'Gonzales','marianog@gmail.com','993249187', '','UPN-dep 4',2,1),
+('72892601', 'Miluska', 'Burgos', 'Gonzales','miluskagbg@gmail.com','993249187', '1023300411','',21,0),
+('72892602', 'Giancarlo', 'Solano', 'Quincho','gsolanoq.tj@gmail.com','940220566', '1023300401','',21,0),
+('72892603', 'MAriano', 'Burgos', 'Gonzales','marianog@gmail.com','993249187', '','UPN-dep 4',2,1),
+('72892604', 'Miluska', 'Burgos', 'Gonzales','miluskagbg@gmail.com','993249187', '1023300411','',21,0),
+('72892605', 'Giancarlo', 'Solano', 'Quincho','gsolanoq.tj@gmail.com','940220566', '1023300401','',21,0),
+('72892606', 'MAriano', 'Burgos', 'Gonzales','marianog@gmail.com','993249187', '','UPN-dep 4',2,1),
+('72892607', 'Miluska', 'Burgos', 'Gonzales','miluskagbg@gmail.com','993249187', '1023300411','',21,0),
+('72892608', 'Giancarlo', 'Solano', 'Quincho','gsolanoq.tj@gmail.com','940220566', '1023300401','',21,0),
+('72892609', 'MAriano', 'Burgos', 'Gonzales','marianog@gmail.com','993249187', '','UPN-dep 4',2,1)
 ;
+INSERT INTO `inscripcion` (`idINSCRIPCION`, `presencial`, `carnet`, `materiales`, `fecha`, `certificado`, `dni`, `tipo`) VALUES
+-- ('00000000001', 0, 0, 0,'05-08-14 11:35', 'si', '72892690', 0),
+('00000000002', 0, 0, 0,'05-08-14 11:35', 'si', '72892688', 0),
+('00000000003', 0, 0, 0,'05-08-14 11:35', 'si', '72892600', 0);

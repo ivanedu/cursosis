@@ -1,8 +1,7 @@
 <?php
-
 include_once 'modeloConexion.php';
 
-class ModeloInscripcion{
+class ModeloInscripcion {
     
     private $param = array();
     private $modeloConexion = null;
@@ -18,21 +17,19 @@ class ModeloInscripcion{
         /*
          *
          */
-        $modeloConexion->prepararConsulta("CALL spPersona(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $modeloConexion->prepararConsulta("CALL spInscripcion(?,?,?,?,?,?,?,?,?,?,?,?)");
         $modeloConexion->enlazarParametrosConsulta(array('string',$opcion));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['inicio']));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['final']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['consulta']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['idINSCRIPCION']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['presencial']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['carnet']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['materiales']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['fecha']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['certificado']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['dni']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['nombre']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['ape_paterno']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['ape_materno']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['email']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['telefono']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['codigoUni']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['direccion']));
-        $modeloConexion->enlazarParametrosConsulta(array('number',$param['idUNIVERSIDAD']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['pass']));
+        $modeloConexion->enlazarParametrosConsulta(array('number',$param['tipo']));
         $modeloConexion->ejecutarConsulta();
     }
 
@@ -40,8 +37,14 @@ class ModeloInscripcion{
         $this->param = $param;
         $opcionCorrecta = true;
         switch ($this->param['opcion']) {
-            case "listarpagina":
-                $resultadoGestion = $this->listarpagina();
+            case "listarPagina":
+                $resultadoGestion = $this->listarPagina();
+                break;
+            case "buscarPorDni":
+                $resultadoGestion = $this->buscarPorDni();
+                break;
+            case "registropago":
+                $resultadoGestion = $this->registropago();
                 break;
             default:
                 $opcionCorrecta = false;
@@ -51,7 +54,22 @@ class ModeloInscripcion{
         if($opcionCorrecta) $this->modeloConexion->cerrarConexion();
         return $resultadoGestion;
     }
-    private function listarpagina() {
+    
+    private function buscarPorDni(){
+        $this->ejecutarProcedimientoAlmacenado('buscarPorDnicontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('buscarPorDni');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('nombre',
+                'ape_paterno','ape_materno','email','telefono','codigoUni',
+                'direccion','idUNIVERSIDAD', 'idDEPARTAMENTO', 'perTipo'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+
+    private function listar¨Pagina() {
         $this->ejecutarProcedimientoAlmacenado('listarContador');
         $total = $this->modeloConexion->obtenerCampoUnico('total');
         $datos = array();

@@ -8,6 +8,41 @@ function getVistaInscripcion() {
     inscripcionMascaraPersona = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Persona : Store InscripcionPersona..."});
     inscripcionCargadoInicial();
 
+    function ins_limpiar(){
+        ins_nombre.reset();
+        ins_ape_paterno.reset();
+        ins_ape_materno.reset();
+        ins_email.reset();
+        ins_telefono.reset();
+        ins_tipo_estudiante.reset();
+        ins_tipo_profesional.reset();
+        ins_codigoUni.reset();
+        ins_idUniversidad.reset();
+        ins_idDepartamento.reset();
+        ins_direccion.reset();
+    }
+    function ins_buscarPorDni(){
+        ins_limpiar();
+        formularioVistaInscripcion.getForm().load({
+            url: 'controlador/controladorInscripcion.php',
+            waitMsg: 'Cargando...',
+            params: {
+                opcion: "buscarPorDni",
+                dni: ins_dni.getValue()
+            }
+        });
+    }
+    function ins_buscarPorNombre(){
+        formularioVistaInscripcion.getForm().load({
+            url: 'controlador/controladorInscripcion.php',
+            waitMsg: 'Cargando...',
+            params: {
+                opcion: "buscarPorNombre",
+                nombre: ins_nombre2.getValue(),
+                ape_patterno: ins_ape_paterno2.getValue()
+            }
+        });
+    }
     var ins_dni = new Ext.form.NumberField({
         fieldLabel: '<span>Dni</span><span style="color:red;font-weight:bold">*</span>',
         id: 'ins_dni',
@@ -22,7 +57,7 @@ function getVistaInscripcion() {
             keypress: function(my, evt) {
                 if (evt.getKey() == evt.ENTER)
                 {
-                    buscarPorDni();
+                    ins_buscarPorDni();
                 }
             }
         }
@@ -492,6 +527,7 @@ function getVistaInscripcion() {
                     iconCls: 'search',
                     width: 100,
                     handler: function() {
+                        ins_buscarPorNombre();
                     }
                 }, {
                     text: 'Cancelar',
@@ -537,13 +573,57 @@ function getVistaInscripcion() {
         });
 
     }
-    function buscarPorDni(){
-        
-    }
     var formularioVistaInscripcion = new Ext.form.FormPanel({
         title: 'Formulario Registro Inscripcion',
         padding: '10px 10px 10px 10px',
         labelAlign: 'left',
+        reader: new Ext.data.JsonReader({
+            root: 'datos',
+            totalProperty: 'total',
+            fields: [
+                {
+                    name: 'ins_nombre',
+                    type: 'string',
+                    mapping: 'nombre'
+                }, {
+                    name: 'ins_ape_paterno',
+                    type: 'string',
+                    mapping: 'ape_paterno'
+                },{
+                    name: 'ins_ape_materno',
+                    type: 'string',
+                    mapping: 'ape_materno'
+                },{
+                    name: 'ins_email',
+                    type: 'string',
+                    mapping: 'email'
+                }, {
+                    name: 'ins_telefono',
+                    type: 'string',
+                    mapping: 'telefono'
+                }, {
+                    name: 'ins_tipo',
+                    type: 'number',
+                    mapping: 'perTipo'
+                }, {
+                    name: 'ins_codigoUni',
+                    type: 'string',
+                    mapping: 'codigoUni'
+                }, {
+                    name: 'ins_idUniversidad',
+                    type: 'number',
+                    mapping: 'idUNIVERSIDAD'
+                }, {
+                    name: 'ins_idDepartamento',
+                    type: 'number',
+                    mapping: 'idDEPARTAMENTO'
+                }, {
+                    name: 'ins_direccion',
+                    type: 'string',
+                    mapping: 'direccion'
+                }
+            ]
+        }),
         items: [
             {
                 border: false,
@@ -697,6 +777,8 @@ function getVistaInscripcion() {
                 iconCls: 'close',
                 width: 100,
                 handler: function() {
+                    ins_dni.reset();
+                    ins_limpiar();
                 }
             }]
     });

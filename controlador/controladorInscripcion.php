@@ -7,16 +7,14 @@ $param['opcion']='';
 $param['inicio']=0;
 $param['final']=10;
 $param['consulta']='';
+$param['idINSCRIPCION']=0;
+$param['presencial']=0;
+$param['carnet']=1;
+$param['materiales']=1;
+$param['fecha']='';
+$param['certificado']=1;
 $param['dni']='';
-$param['nombre']='';
-$param['ape_paterno']='';
-$param['ape_materno']='';
-$param['email']='';
-$param['telefono']='';
-$param['codigoUni']='';
-$param['direccion']='';
-$param['idUNIVERSIDAD']=0;
-$param['pass']='';
+$param['tipo']=0;
 
 if (isset($_POST['opcion']))
     $param['opcion'] = $_POST['opcion'];
@@ -26,28 +24,22 @@ if (isset($_POST['limit']))
     $param['final'] = $_POST['limit'];
 if (isset($_POST['query']))
     $param['consulta'] = $_POST['query'];
+if (isset($_POST['idINSCRIPCION']))
+    $param['idINSCRIPCION'] = $_POST['idINSCRIPCION'];
+if (isset($_POST['presencial']))
+    $param['presencial'] = $_POST['presencial'];
+if (isset($_POST['carnet']))
+    $param['carnet'] = $_POST['carnet'];
+if (isset($_POST['materiales']))
+    $param['materiales'] = $_POST['materiales'];
+if (isset($_POST['fecha']))
+    $param['fecha'] = $_POST['fecha'];
+if (isset($_POST['certificado']))
+    $param['certificado'] = $_POST['certificado'];
 if (isset($_POST['dni']))
     $param['dni'] = $_POST['dni'];
-if (isset($_POST['nombre']))
-    $param['nombre'] = $_POST['nombre'];
-if (isset($_POST['ape_paterno']))
-    $param['ape_paterno'] = $_POST['ape_paterno'];
-if (isset($_POST['ape_materno']))
-    $param['ape_materno'] = $_POST['ape_materno'];
-if (isset($_POST['email']))
-    $param['email'] = $_POST['email'];
-if (isset($_POST['email']))
-    $param['email'] = $_POST['email'];
-if (isset($_POST['telefono']))
-    $param['telefono'] = $_POST['telefono'];
-if (isset($_POST['codigoUni']))
-    $param['codigoUni'] = $_POST['codigoUni'];
-if (isset($_POST['direccion']))
-    $param['direccion'] = $_POST['direccion'];
-if (isset($_POST['idUNIVERSIDAD']))
-    $param['idUNIVERSIDAD'] = $_POST['idUNIVERSIDAD'];
-if (isset($_POST['pass']))
-    $param['pass'] = $_POST['pass'];
+if (isset($_POST['tipo']))
+    $param['tipo'] = $_POST['tipo'];
 
 $modeloInscripcion=new ModeloInscripcion();
 echo $modeloInscripcion->gestionar($param);
