@@ -86,6 +86,17 @@ Ext.onReady(function() {
                     items: panelUsuario
                 });
             }
+            if ((node.id) == '7') {
+                var Ins_panelInscripcion = getVistaInscripcion();
+                tab = new Ext.Panel({
+                    id: 'inscripcion-panel',
+                    title: 'Inscripcion',
+                    closable: true,
+                    layout: 'fit',
+                    items: Ins_panelInscripcion,
+                    
+                });
+            }
             if ((node.id) == '8') {
                 var panelPagoCongreso = getVistaPagoCongreso();
                 tab = new Ext.Panel({
@@ -94,6 +105,39 @@ Ext.onReady(function() {
                     closable: true,
                     layout: 'fit',
                     items: panelPagoCongreso
+                });
+            }
+            if ((node.id) == '9') {
+                var panelPagoPreCongreso = getVistaPagoPreCongreso();
+                tab = new Ext.Panel({
+                    id: 'pagoprecongreso-panel',
+                    title: 'Pago Pre Congreso',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelPagoPreCongreso,
+                    
+                });
+            }
+            if ((node.id) == '10') {
+                var panelEntregaMateriales = getVistaEntregaMateriales();
+                tab = new Ext.Panel({
+                    id: 'entregamateriales-panel',
+                    title: 'Entrega Materiales',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelEntregaMateriales,
+                    
+                });
+            }
+            if ((node.id) == '11') {
+                var panelEntregaCarnet = getVistaEntregaCarnet();
+                tab = new Ext.Panel({
+                    id: 'entregacarnet-panel',
+                    title: 'Entrega Carnet',
+                    closable: true,
+                    layout: 'fit',
+                    items: panelEntregaCarnet,
+                    
                 });
             }
             if ((node.id) == '12') {
@@ -107,14 +151,15 @@ Ext.onReady(function() {
                     
                 });
             }
-            if ((node.id) == '7') {
-                var Ins_panelInscripcion = getVistaInscripcion();
+            
+            if ((node.id) == '13') {
+                var panelMantInscripcion = getVistaMantInscripcion();
                 tab = new Ext.Panel({
-                    id: 'inscripcion-panel',
-                    title: 'Inscripcion',
+                    id: 'MantInscripcion-panel',
+                    title: 'Mant-Inscripcion',
                     closable: true,
                     layout: 'fit',
-                    items: Ins_panelInscripcion,
+                    items: panelMantInscripcion,
                     
                 });
             }

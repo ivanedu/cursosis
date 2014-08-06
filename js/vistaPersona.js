@@ -1,8 +1,6 @@
 function getVistaPersona() {
     var ventanaPopupRegistroPersona;
-    var ventanaPopupEdicionPersona;
     var formularioRegistroPersona;
-    var formularioEdicionPersona;
 
     personaMascaraPersona = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Persona : Store Persona..."});
     personaMascaraUniversidad = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Universidad : Store PersonaUniversidad..."});
@@ -18,51 +16,7 @@ function getVistaPersona() {
         itemSelector: true,
         height: 400,
         tbar: [{
-                text: 'Registrar',
-                tooltip: 'Registrar Persona',
-                iconCls: 'add',
-                handler: function() {
-                    abrirFormularioRegistroPersona();
-                    ventanaPopupRegistroPersona.show();
-                }
-            }/*, '-', {
-             ref: '../btnEditarRelacion',
-             text: 'Editar',
-             tooltip: 'Editar Relacion',
-             iconCls: 'edit',
-             disabled: true,
-             listeners: {
-             click: function() {
-             var seleccionFila = gridPersona.getSelectionModel().getSelections();
-             if (seleccionFila.length <= 0) {
-             verMessageBoxAdvertencia("Debes seleccionar una fila");
-             } else {
-             abrirFormularioEdicionPersona();
-             Ext.getCmp('paramedi_perId').setValue(seleccionFila[0].get('param_relId'));
-             Ext.getCmp('paramedi_perNombre').setValue(seleccionFila[0].get('param_perIdRelacionador'));
-             Ext.getCmp('paramedi_per').setValue(seleccionFila[0].get('param_perIdRelacionado'));
-             Ext.getCmp('paramedi_tiprelId').setValue(seleccionFila[0].get('param_tiprelId'));
-             ventanaPopupEdicionRelacion.show();
-             }
-             }
-             }
-             }, '-', {
-             ref: '../btnEliminarRelacion',
-             text: 'Eliminar',
-             tooltip: 'Eliminar Relacion',
-             iconCls: 'remove',
-             disabled: true,
-             listeners: {
-             click: function() {
-             var seleccionFila = gridRelacion.getSelectionModel().getSelections();
-             if (seleccionFila.length <= 0) {
-             verMessageBoxAdvertencia("Debes seleccionar una fila");
-             } else {
-             guardarEliminacionRelacion(seleccionFila[0].get('param_relId'), seleccionFila[0].get('param_perIdRelacionador'));
-             }
-             }
-             }
-             }*/
+        }
         ],
         bbar: new Ext.PagingToolbar({
             store: personaStorePersona,
@@ -80,22 +34,42 @@ function getVistaPersona() {
                         header: 'DNI',
                         dataIndex: 'param_dni',
                         sortable: true,
-                        width: 50
+                        width: 80
                     }, {
                         header: 'Nombre',
                         dataIndex: 'param_nombre',
                         sortable: true,
-                        width: 150
+                        width: 110
                     }, {
                         header: 'Apellido Paterno',
                         dataIndex: 'param_ape_paterno',
                         sortable: true,
-                        width: 150
+                        width: 90
                     }, {
                         header: 'Apellido Materno',
                         dataIndex: 'param_ape_materno',
                         sortable: true,
+                        width: 90
+                    }, {
+                        header: 'E-mail',
+                        dataIndex: 'param_email',
+                        sortable: true,
+                        width: 100
+                    }, {
+                        header: 'Telefono',
+                        dataIndex: 'param_telefono',
+                        sortable: true,
+                        width: 70
+                    }, {
+                        header: 'CodigoUni',
+                        dataIndex: 'param_codigoUni',
+                        sortable: true,
                         width: 150
+                    }, {
+                        header: 'Direccion',
+                        dataIndex: 'param_direccion',
+                        sortable: true,
+                        width: 100
                     }, {
                         header: 'Universidad',
                         dataIndex: 'param_idUNIVERSIDAD',
@@ -113,6 +87,11 @@ function getVistaPersona() {
                             }
                             return valor;
                         }
+                    }, {
+                        header: 'Tipo',
+                        dataIndex: 'param_tipo',
+                        sortable: true,
+                        width: 50
                     }],
         selModel: new Ext.grid.RowSelectionModel({singleSelect: true})
     });

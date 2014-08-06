@@ -1,14 +1,13 @@
 function getVistaInscripcion() {
     var ventanaPopupBuscarInscripcion;
 
-    inscripcionMascaraInscripcion = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Inscripcion : Store Inscripcion..."});
     inscripcionMascaraUniversidad = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Universidad : Store InscripcionUniversidad..."});
     inscripcionMascaraUniveridadRender = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando UniversidadRender : Store InscripcionUniversidadRender..."});
     inscripcionMascaraDepartamento = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Departamento : Store InscripcionDepartamento..."});
     inscripcionMascaraPersona = new Ext.LoadMask(Ext.getBody(), {msg: "Cargando Persona : Store InscripcionPersona..."});
     inscripcionCargadoInicial();
 
-    function ins_limpiar(){
+    function ins_limpiar() {
         ins_nombre.reset();
         ins_ape_paterno.reset();
         ins_ape_materno.reset();
@@ -21,7 +20,7 @@ function getVistaInscripcion() {
         ins_idDepartamento.reset();
         ins_direccion.reset();
     }
-    function ins_buscarPorDni(){
+    function ins_buscarPorDni() {
         ins_limpiar();
         formularioVistaInscripcion.getForm().load({
             url: 'controlador/controladorInscripcion.php',
@@ -32,16 +31,151 @@ function getVistaInscripcion() {
             }
         });
     }
-    function ins_buscarPorNombre(){
-        formularioVistaInscripcion.getForm().load({
-            url: 'controlador/controladorInscripcion.php',
-            waitMsg: 'Cargando...',
-            params: {
-                opcion: "buscarPorNombre",
-                nombre: ins_nombre2.getValue(),
-                ape_patterno: ins_ape_paterno2.getValue()
+    function ins_buscarPorNombre() {
+        inscripcionStorePersona.setBaseParam('nombre', Ext.getCmp('ins_nombre2').getValue());
+        inscripcionStorePersona.setBaseParam('ape_paterno', Ext.getCmp('ins_ape_paterno2').getValue());
+        inscripcionStorePersona.setBaseParam('ape_materno', Ext.getCmp('ins_ape_materno2').getValue());
+        inscripcionStorePersona.load();
+    }
+    function ins_registrarInscripcion() {
+        Ext.MessageBox.wait('Espere por favor...', "REGISTRO");
+        if (formularioVistaInscripcion.getForm().isValid())
+        {
+            Ext.Ajax.request({
+                url: 'controlador/controladorPersona.php',
+                params: {
+                    opcion: "registrarPersona",
+                    dni: ins_dni.getValue(),
+                    nombre: ins_nombre.getValue(),
+                    ape_paterno: ins_ape_paterno.getValue(),
+                    ape_materno: ins_ape_materno.getValue(),
+                    email: ins_email.getValue(),
+                    telefono: ins_telefono.getValue(),
+                    per_tipo: ins_tipo.getValue().getGroupValue(),
+                    codigoUni: ins_codigoUni.getValue(),
+                    idDEPARTAMENTO: ins_idDepartamento.getValue(),
+                    idUNIVERSIDAD: ins_idUniversidad.getValue(),
+                    direccion: ins_direccion.getValue()
+                },
+                success: function(response) {
+                    var datos = Ext.util.JSON.decode(response.responseText);
+                    if (datos.resultado)
+                    {
+                        //registrar Inscripcion
+                        Ext.Ajax.request({
+                            url: 'controlador/controladorInscripcion.php',
+                            params: {
+                                opcion: "registrarInscripcion",
+                                dni2: ins_dni.getValue()
+                            },
+                            success: function(response) {
+                                var datos = Ext.util.JSON.decode(response.responseText);
+                                if (datos.resultado)
+                                {
+                                    verMessageBoxExito(datos.mensaje);
+                                    inscripcionStorePersona.reload();
+                                    formularioVistaInscripcion.getForm().reset();
+                                    ins_limpiar();
+                                    ins_dni.reset();
+                                    ins_dni.focus();
+                                } else {
+                                    verMessageBoxError(datos.mensaje);
+                                }
+                            }
+                        });
+                    } else {
+                        verMessageBoxError(datos.mensaje);
+                    }
+
+                }
+            });
+
+        }
+        else
+        {
+            verMessageBoxAdvertencia("Digite campo(s) requerido(s)");
+        }
+    }
+    function pagcon_guardarPagoCongreso()
+    {
+        if (pagcon_validarFormulario())
+        {
+            Ext.MessageBox.wait('Espere por favor...', "REGISTRO");
+            Ext.Ajax.request({
+                url: 'controlador/controladorInscripcion.php',
+                params: {
+                    opcion: "registropago",
+                    idINSCRIPCION: pagcon_idINSCRIPCION.getValue(),
+                    tipo: pagcon_tipo.getValue().getGroupValue(),
+                    presencial: pagcon_presencial.getValue().getGroupValue()
+                },
+                success: function(response) {
+                    var datos = Ext.util.JSON.decode(response.responseText);
+                    if (datos.resultado)
+                    {
+                        var fecha = new Date(pagcon_fecha_fecha.getValue());
+                        var hora = pagcon_fecha_tiempo.getValue();
+                        var fechaCompleta = new Date(fecha.toDateString() + " " + hora);
+                        if (pagcon_tipo.getValue().getGroupValue() == 1)
+                        {
+                            //Boleta
+                            Ext.Ajax.request({
+                                url: 'controlador/controladorBoleta.php',
+                                params: {
+                                    opcion: "registropago",
+                                    idINSCRIPCION: pagcon_idINSCRIPCION.getValue(),
+                                    fecha: fechaCompleta,
+                                    monto: pagcon_monto.getValue(),
+                                    numComprobante: pagcon_numComprobante.getValue()
+                                },
+                                success: function(response) {
+                                    var datos = Ext.util.JSON.decode(response.responseText);
+                                    if (datos.resultado)
+                                    {
+                                        verMessageBoxExito(datos.mensaje);
+                                        pagcon_limpiar();
+                                        pagcon_dni.reset();
+                                        pagcon_dni.focus();
+                                    } else {
+                                        verMessageBoxError(datos.mensaje);
+                                    }
+                                }
+                            });
+                        } else if (pagcon_tipo.getValue().getGroupValue() == 2) {
+                            Ext.Ajax.request({
+                                url: 'controlador/controladorVoucher.php',
+                                params: {
+                                    opcion: "registropago",
+                                    nroOperacion: pagcon_nroOperacion.getValue(),
+                                    fecha: fechaCompleta,
+                                    monto: pagcon_monto.getValue(),
+                                    agente: pagcon_agente.getValue().getGroupValue(),
+                                    nombreBancario: pagcon_nombreBancario.getValue(),
+                                    imagen: pagcon_imagen.getValue(),
+                                    enFisico: pagcon_enFisico.getValue().getGroupValue(),
+                                    idINSCRIPCION: pagcon_idINSCRIPCION.getValue()
+                                },
+                                success: function(response) {
+                                    var datos = Ext.util.JSON.decode(response.responseText);
+                                    if (datos.resultado)
+                                    {
+                                        verMessageBoxExito(datos.mensaje);
+                                        pagcon_limpiar();
+                                        pagcon_dni.reset();
+                                        pagcon_dni.focus();
+                                    } else {
+                                        verMessageBoxError(datos.mensaje);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        verMessageBoxError(datos.mensaje);
+                    }
+                }
             }
-        });
+            );
+        }
     }
     var ins_dni = new Ext.form.NumberField({
         fieldLabel: '<span>Dni</span><span style="color:red;font-weight:bold">*</span>',
@@ -68,15 +202,11 @@ function getVistaInscripcion() {
         iconCls: 'search',
         iconAlign: 'left',
         text: 'Buscar',
-        listeners: {
-            click: function(my, evt) {
-                if (evt.getKey() == evt.ENTER)
-                {
-                    //
-                }
-            }
-        },
         handler: function() {
+            inscripcionStorePersona.setBaseParam('nombre', '');
+            inscripcionStorePersona.setBaseParam('ape_paterno', '');
+            inscripcionStorePersona.setBaseParam('ape_materno', '');
+            inscripcionStorePersona.load();
             abrirFormularioBuscarInscripcion();
             ventanaPopupBuscarInscripcion.show();
         }
@@ -113,7 +243,7 @@ function getVistaInscripcion() {
                     guardarRegistroPersona();
                 } else {
                     var ascii = evt.getKey();
-                    if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                    if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                     {
                         evt.stopEvent();
                     }
@@ -138,7 +268,7 @@ function getVistaInscripcion() {
                     guardarRegistroPersona();
                 } else {
                     var ascii = evt.getKey();
-                    if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                    if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                     {
                         evt.stopEvent();
                     }
@@ -163,7 +293,7 @@ function getVistaInscripcion() {
                     guardarRegistroPersona();
                 } else {
                     var ascii = evt.getKey();
-                    if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                    if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                     {
                         evt.stopEvent();
                     }
@@ -188,7 +318,10 @@ function getVistaInscripcion() {
                     guardarRegistroPersona();
                 } else {
                     var ascii = evt.getKey();
-                    if (!((ascii >= 64 && ascii <= 90) || (ascii >= 48 && ascii <= 57) || (ascii >= 45 && ascii <= 46) || (ascii == 95) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                    if (!((ascii >= 64 && ascii <= 90) || (ascii >= 48 && ascii <= 57) || 
+                            (ascii >= 45 && ascii <= 46) || (ascii == 95) || (ascii == 46) || 
+                            (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE 
+                            || ascii == evt.DELETE) )
                     {
                         evt.stopEvent();
                     }
@@ -335,7 +468,7 @@ function getVistaInscripcion() {
                     guardarRegistroPersona();
                 } else {
                     var ascii = evt.getKey();
-                    if (!((ascii >= 65 && ascii <= 90) || (ascii >= 48 && ascii <= 57) || (ascii >= 45 && ascii <= 46) || (ascii == 95) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                    if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 48 && ascii <= 57) || (ascii >= 45 && ascii <= 46) || (ascii == 95) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                     {
                         evt.stopEvent();
                     }
@@ -361,7 +494,7 @@ function getVistaInscripcion() {
                         guardarRegistroPersona();
                     } else {
                         var ascii = evt.getKey();
-                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                         {
                             evt.stopEvent();
                         }
@@ -386,7 +519,7 @@ function getVistaInscripcion() {
                         guardarRegistroPersona();
                     } else {
                         var ascii = evt.getKey();
-                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                         {
                             evt.stopEvent();
                         }
@@ -411,7 +544,7 @@ function getVistaInscripcion() {
                         guardarRegistroPersona();
                     } else {
                         var ascii = evt.getKey();
-                        if (!((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
+                        if (!(esTilde(ascii)||(ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122) || ascii == evt.SPACE || ascii == evt.DELETE) || ascii == 46)
                         {
                             evt.stopEvent();
                         }
@@ -429,6 +562,14 @@ function getVistaInscripcion() {
             height: 200,
             tbar: [
             ],
+            listeners: {
+                rowdblclick: function(objecto, rowIndex, objecto) {
+                    var dniSelec = gridPersona.getStore().getAt(rowIndex).get('param_dni');
+                    ventanaPopupBuscarInscripcion.close();
+                    ins_dni.setValue(dniSelec);
+                    ins_dni.focus();
+                }
+            },
             bbar: new Ext.PagingToolbar({
                 store: inscripcionStorePersona,
                 displayInfo: true,
@@ -467,17 +608,17 @@ function getVistaInscripcion() {
                             sortable: true,
                             //hidden:true,
                             width: 200,
-                             renderer: function(val) {
-                             var records = inscripcionStoreUniversidadRender.getRange();
-                             var valor = '';
-                             for (var i = 0; i < records.length; i++) {
-                             if (records[i].get('param_idUNIVERSIDAD') == val) {
-                             valor = records[i].get('param_nombre');
-                             break;
-                             }
-                             }
-                             return valor;
-                             }
+                            renderer: function(val) {
+                                var records = inscripcionStoreUniversidadRender.getRange();
+                                var valor = '';
+                                for (var i = 0; i < records.length; i++) {
+                                    if (records[i].get('param_idUNIVERSIDAD') == val) {
+                                        valor = records[i].get('param_nombre');
+                                        break;
+                                    }
+                                }
+                                return valor;
+                            }
                         }],
             selModel: new Ext.grid.RowSelectionModel({singleSelect: true})
         });
@@ -589,11 +730,11 @@ function getVistaInscripcion() {
                     name: 'ins_ape_paterno',
                     type: 'string',
                     mapping: 'ape_paterno'
-                },{
+                }, {
                     name: 'ins_ape_materno',
                     type: 'string',
                     mapping: 'ape_materno'
-                },{
+                }, {
                     name: 'ins_email',
                     type: 'string',
                     mapping: 'email'
@@ -765,12 +906,16 @@ function getVistaInscripcion() {
                 iconCls: 'nuevo',
                 width: 100,
                 handler: function() {
+                    ins_dni.reset();
+                    ins_limpiar();
+                    ins_dni.focus();
                 }
             }, {
                 text: 'Guardar',
                 iconCls: 'aceptar',
                 width: 100,
                 handler: function() {
+                    ins_registrarInscripcion();
                 }
             }, {
                 text: 'Cancelar',

@@ -33,7 +33,7 @@ var personaStorePersona = new Ext.data.Store({
                 mapping: 'ape_materno'
             }, {
                 name: 'param_email',
-                type: 'number',
+                type: 'string',
                 mapping: 'email'
             }, {
                 name: 'param_telefono',
@@ -52,9 +52,9 @@ var personaStorePersona = new Ext.data.Store({
                 type: 'number',
                 mapping: 'idUNIVERSIDAD'
             }, {
-                name: 'param_pass',
-                type: 'string',
-                mapping: 'pass'
+                name: 'param_tipo',
+                type: 'number',
+                mapping: 'tipo'
             }]
     })
 });

@@ -6,57 +6,49 @@ var inscripcionMascaraPersona;
 
 var inscripcionStoreInscripcion = new Ext.data.Store({
     proxy: new Ext.data.HttpProxy({
-        url: 'controlador/controladorinscripcion.php',
+        url: 'controlador/controladorInscripcion.php',
         method: 'POST'
     }), baseParams: {
-        opcion: 'listarpagina',
+        opcion: 'listarPagina',
         start: 0,
         limit: 10
     },
     reader: new Ext.data.JsonReader({
         root: 'datos',
         totalProperty: 'total',
-        id: 'dni',
+        id: 'idINSCRIPCION',
         fields: [{
+                name: 'param_idINSCRIPCION',
+                type: 'number',
+                mapping: 'idINSCRIPCION'
+            }, {
+                name: 'param_presencial',
+                type: 'number',
+                mapping: 'presencial'
+            }, {
+                name: 'param_carnet',
+                type: 'number',
+                mapping: 'carnet'
+            }, {
+                name: 'param_materiales',
+                type: 'number',
+                mapping: 'materiales'
+            }, {
+                name: 'param_fecha',
+                type: 'string',
+                mapping: 'fecha'
+            }, {
+                name: 'param_certificado',
+                type: 'number',
+                mapping: 'certificado'
+            }, {
                 name: 'param_dni',
                 type: 'string',
                 mapping: 'dni'
             }, {
-                name: 'param_nombre',
-                type: 'string',
-                mapping: 'nombre'
-            }, {
-                name: 'param_ape_paterno',
-                type: 'string',
-                mapping: 'ape_paterno'
-            }, {
-                name: 'param_ape_materno',
-                type: 'string',
-                mapping: 'ape_materno'
-            }, {
-                name: 'param_email',
+                name: 'param_tipo',
                 type: 'number',
-                mapping: 'email'
-            }, {
-                name: 'param_telefono',
-                type: 'string',
-                mapping: 'telefono'
-            }, {
-                name: 'param_codigoUni',
-                type: 'string',
-                mapping: 'codigoUni'
-            }, {
-                name: 'param_direccion',
-                type: 'string',
-                mapping: 'direccion'
-            }, {
-                name: 'param_idUNIVERSIDAD',
-                type: 'number',
-                mapping: 'idUNIVERSIDAD'
-            }, {
-                name: 'param_pass',
-                type: 'string',
-                mapping: 'pass'
+                mapping: 'tipo'
             }]
     })
 });
@@ -137,7 +129,7 @@ var inscripcionStorePersona = new Ext.data.Store({
         url: 'controlador/controladorPersona.php',
         method: 'POST'
     }), baseParams: {
-        opcion: 'listarpagina',
+        opcion: 'listarPaginaIns',
         start: 0,
         limit: 10
     },
@@ -182,9 +174,9 @@ var inscripcionStorePersona = new Ext.data.Store({
                 type: 'number',
                 mapping: 'idUNIVERSIDAD'
             }, {
-                name: 'param_pass',
-                type: 'string',
-                mapping: 'pass'
+                name: 'param_tipo',
+                type: 'number',
+                mapping: 'tipo'
             }]
     })
 });
@@ -215,18 +207,16 @@ inscripcionStoreUniversidadRender.on('beforeload', function(my, e) {
 });
 inscripcionStoreUniversidadRender.on('load', function(my, e) {
     inscripcionMascaraUniveridadRender.hide();
-    //if(inscripcionEnlaceInicial)inscripcionStoreInscripcion.load();
-    if(inscripcionEnlaceInicial)inscripcionEnlaceInicial=false;
+    if(inscripcionEnlaceInicial)inscripcionStoreInscripcion.load();
 });
-
-/*
 inscripcionStoreInscripcion.on('beforeload', function(my, e) {
     inscripcionMascaraInscripcion.show();
 });
 inscripcionStoreInscripcion.on('load', function(my, e) {
     inscripcionMascaraInscripcion.hide();
     if(inscripcionEnlaceInicial)inscripcionEnlaceInicial=false;
-});*/
+});
+
 
 function inscripcionCargadoInicial(){
     inscripcionEnlaceInicial=true;

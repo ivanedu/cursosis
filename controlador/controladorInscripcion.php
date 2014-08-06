@@ -15,6 +15,7 @@ $param['fecha']='';
 $param['certificado']=1;
 $param['dni']='';
 $param['tipo']=0;
+$param['dni2']='';
 
 if (isset($_POST['opcion']))
     $param['opcion'] = $_POST['opcion'];
@@ -40,6 +41,8 @@ if (isset($_POST['dni']))
     $param['dni'] = $_POST['dni'];
 if (isset($_POST['tipo']))
     $param['tipo'] = $_POST['tipo'];
+if (isset($_POST['dni2']))
+    $param['dni2'] = $_POST['dni2'];
 
 $modeloInscripcion=new ModeloInscripcion();
 echo $modeloInscripcion->gestionar($param);

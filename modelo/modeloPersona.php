@@ -32,16 +32,39 @@ class ModeloPersona {
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['codigoUni']));
         $modeloConexion->enlazarParametrosConsulta(array('string',$param['direccion']));
         $modeloConexion->enlazarParametrosConsulta(array('number',$param['idUNIVERSIDAD']));
-        $modeloConexion->enlazarParametrosConsulta(array('string',$param['pass']));
+        $modeloConexion->enlazarParametrosConsulta(array('string',$param['tipo']));
         $modeloConexion->ejecutarConsulta();
+        
     }
 
     public function gestionar($param) {
         $this->param = $param;
         $opcionCorrecta = true;
         switch ($this->param['opcion']) {
+            case "registrarPersona":
+                $resultadoGestion = $this->registrarPersona();
+                break;
             case "listarpagina":
                 $resultadoGestion = $this->listarpagina();
+                break;
+            case "listarPaginaIns":
+                if ($this->param['nombre']=='' && $this->param['ape_paterno']=='' 
+                        && $this->param['ape_materno']==''){
+                    $resultadoGestion = $this->listarPaginaIns();
+                }else{
+                    $resultadoGestion = $this->filtrarTodoIns();
+                }
+                break;
+            case "buscarpagocongreso":
+                $resultadoGestion = $this->buscarpagocongreso();
+                break;
+            case "listarpresenciales":
+                if($this->param['dni']=='')
+                {
+                    $resultadoGestion = $this->listarpresenciales();
+                }else{
+                    $resultadoGestion = $this->filtrarpresenciales();
+                }
                 break;
             default:
                 $opcionCorrecta = false;
@@ -51,6 +74,18 @@ class ModeloPersona {
         if($opcionCorrecta) $this->modeloConexion->cerrarConexion();
         return $resultadoGestion;
     }
+    private function registrarPersona() {
+        $this->ejecutarProcedimientoAlmacenado('registrarvalidacion');
+        $respuesta = $this->modeloConexion->obtenerCampoUnico('respuesta');
+        if ($respuesta=='') {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('registrarPersona');
+        }else{
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('modificarPersona');
+        }
+        return '{resultado:true,mensaje: "Registro Satisfactorio"}';
+    }
     private function listarpagina() {
         $this->ejecutarProcedimientoAlmacenado('listarContador');
         $total = $this->modeloConexion->obtenerCampoUnico('total');
@@ -58,6 +93,32 @@ class ModeloPersona {
         if ($total > 0) {
             $this->modeloConexion->cerrarabrirConexion();
             $this->ejecutarProcedimientoAlmacenado('listarPagina');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
+                'ape_paterno','ape_materno','email','telefono','codigoUni',
+                'direccion','idUNIVERSIDAD'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    private function filtrarTodoIns() {
+        $this->ejecutarProcedimientoAlmacenado('filtrarTodoContadorIns');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('filtrarTodoIns');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
+                'ape_paterno','ape_materno','email','telefono','codigoUni',
+                'direccion','idUNIVERSIDAD'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    private function listarPaginaIns() {
+        $this->ejecutarProcedimientoAlmacenado('listarContadorIns');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('listarPaginaIns');
             $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
                 'ape_paterno','ape_materno','email','telefono','codigoUni',
                 'direccion','idUNIVERSIDAD'));
@@ -94,6 +155,45 @@ class ModeloPersona {
             $this->modeloConexion->cerrarabrirConexion();
             $this->ejecutarProcedimientoAlmacenado('filtrartodomenosperid');
             $datos = $this->modeloConexion->obtenerCamposMultiples(array('perId','perNombreCompleto'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    private function buscarpagocongreso() {
+        $this->ejecutarProcedimientoAlmacenado('buscarpagocongresocontador');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('buscarpagocongreso');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('idINSCRIPCION',
+                    'perNombreCompleto','tipo','fecha','monto','numComprobante','agente',
+                    'nroOperacion','nombreBancario','enFisico','imagen','presencial'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    function listarpresenciales()
+    {
+        $this->ejecutarProcedimientoAlmacenado('listarpresencialestotal');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('listarpresenciales');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
+                     'ape_paterno','ape_materno','idUNIVERSIDAD','carnet','materiales'));
+        }
+        return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
+    }
+    function filtrarpresenciales()
+    {
+        $this->ejecutarProcedimientoAlmacenado('filtrarpresencialestotal');
+        $total = $this->modeloConexion->obtenerCampoUnico('total');
+        $datos = array();
+        if ($total > 0) {
+            $this->modeloConexion->cerrarabrirConexion();
+            $this->ejecutarProcedimientoAlmacenado('filtrarpresenciales');
+            $datos = $this->modeloConexion->obtenerCamposMultiples(array('dni','nombre',
+                     'ape_paterno','ape_materno','idUNIVERSIDAD','carnet','materiales'));
         }
         return '{total:' . $total . ',datos:' . json_encode($datos) . '}';
     }

@@ -15,15 +15,24 @@
 <script type="text/javascript" src="js/controlusuario/usuario.js"></script>
 
 <!--Aqui Inicia scripts de Stores-->
+<script type="text/javascript" src="js/storePagoCongreso.js"></script>
+<script type="text/javascript" src="js/storePagoPreCongreso.js"></script>
 <script type="text/javascript" src="js/storePersona.js"></script>
 <script type="text/javascript" src="js/storeInscripcion.js"></script>
+<script type="text/javascript" src="js/storeEntregaMateriales.js"></script>
+<script type="text/javascript" src="js/storeEntregaCarnet.js"></script>
+<script type="text/javascript" src="js/storeMantInscripcion.js"></script>
 
 <!--Aqui termina scripts de Stores-->
 <!--Aqui Inicia scripts de Vistas-->
 
+<script type="text/javascript" src="js/vistaPagoPreCongreso.js"></script>
 <script type="text/javascript" src="js/vistaPagoCongreso.js"></script>
 <script type="text/javascript" src="js/vistaInscripcion.js"></script>
 <script type="text/javascript" src="js/vistaPersona.js"></script>
+<script type="text/javascript" src="js/vistaEntregaMateriales.js"></script>
+<script type="text/javascript" src="js/vistaEntregaCarnet.js"></script>
+<script type="text/javascript" src="js/vistaMantInscripcion.js"></script>
 
 <!--Aqui termina scripts de Vistas-->
 

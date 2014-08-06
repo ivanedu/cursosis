@@ -16,7 +16,7 @@ $param['telefono']='';
 $param['codigoUni']='';
 $param['direccion']='';
 $param['idUNIVERSIDAD']=0;
-$param['pass']='';
+$param['tipo']=0;
 
 if (isset($_POST['opcion']))
     $param['opcion'] = $_POST['opcion'];
